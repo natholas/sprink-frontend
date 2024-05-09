@@ -1,0 +1,34 @@
+.cookie-banner {
+  position: fixed;
+  z-index: 99;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 710px;
+  font-size: 12px;
+  line-height: 1.2;
+  max-width: calc(100% - 32px);
+  background-color: var(--accent-color);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  transition: transform .5s ease;
+
+  p {
+    margin: 0;
+    flex: 1 1 auto;
+    width: 100%;
+    display: block;
+  }
+
+  button {
+    flex: 0 0 auto;
+    margin: -16px -16px -16px 0;
+  }
+
+  &.dont-show {
+    transform: translateX(-50%) translateY(-200px);
+  }
+}

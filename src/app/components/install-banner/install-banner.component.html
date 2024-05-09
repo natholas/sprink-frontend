@@ -1,0 +1,6 @@
+<div class="install-banner" *ngIf="showPrompt">
+  <mat-icon>get_app</mat-icon>
+  <h3>Install sprink?</h3>
+  <button mat-flat-button color="white" (click)="install()">INSTALL</button>
+  <a class="later" (click)="hide()">Later</a>
+</div>

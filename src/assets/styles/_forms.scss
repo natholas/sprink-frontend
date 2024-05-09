@@ -1,0 +1,79 @@
+form {
+  display: flex;
+  flex-wrap: wrap;
+  
+  > * {
+    width: 100%;
+  }
+
+}
+
+.formrow {
+  display: flex;
+  width: calc(100% + 16px);
+  margin: 0 -8px;
+
+  > * {
+    width: calc(25% - 16px);
+    margin: 0 8px;
+    flex: 1 1 auto;
+
+    &.field-30 {
+      width: calc(30% - 16px);
+    }
+    &.field-70 {
+      width: calc(70% - 16px);
+    }
+
+    &.no-flex {
+      flex: 0 0 auto;
+      width: auto;
+    }
+  }
+
+  &.break-on-mobile {
+    @media screen and (max-width: 700px) {
+      flex-wrap: wrap;
+      > * {
+        width: 100%;
+      }
+    }
+  }
+
+  &.center-vertically {
+    align-items: center;
+  }
+}
+
+input:-webkit-autofill {
+  box-shadow: 0 0 0 30px white inset !important;
+  
+  .smoke & {
+    box-shadow: 0 0 0 30px darken(#fafafa, 5%) inset !important;
+  }
+}
+
+.input-explanation {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+  opacity: 0.54;
+
+  &.bottomless {
+    padding-bottom: 0;
+  }
+}
+
+.mat-form-field-wrapper {
+  .bottomless & {
+    padding-bottom: 0!important;
+    .mat-form-field-underline {
+      bottom: 0!important;
+    }
+  }
+}
+
+*:focus {
+  outline: none;
+}

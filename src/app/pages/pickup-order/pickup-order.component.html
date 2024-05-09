@@ -1,0 +1,121 @@
+<div class="page">
+
+  <a routerLink="/shop-order/{{order._id}}" mat-button class="back-button">
+    <mat-icon>arrow_back_ios</mat-icon> BACK
+  </a>
+
+  <div class="warning-box desktop-warning">
+    <h3 class="headless bottomless">
+      Note: Order pickup should be done while you're at the customers address.
+    </h3>
+  </div>
+
+  <mat-card>
+    <!-- <mat-card-header>
+      <mat-card-title>Pickup address</mat-card-title>
+    </mat-card-header> -->
+
+    <mat-card-content>
+      <b>{{order.customer.firstName}} {{order.customer.lastName}}</b><br>
+      {{order.address.formatted}} <span *ngIf="order.address.extraAddressInfo">({{order.address.extraAddressInfo}})</span>
+    </mat-card-content>
+
+    <a mat-stroked-button [href]="mapLink" target="_blank" *ngIf="order.status === 'ready' || order.status === 'pickedup'">GET DIRECTIONS</a>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Verify bag contents</mat-card-title>
+      <mat-card-subtitle>Please double check the contents of the bag and confirm or correct any mistakes the customer made while ordering.</mat-card-subtitle>
+      <br><br>
+    </mat-card-header>
+    <div>
+      <div *ngIf="promotion && !promotion.sprinkCreditOnUse" class="promotion-applied-box">
+        <h3 class="bottomless">Promotion applied: <b>{{promotion.title}}</b></h3>
+      </div>
+
+      <div class="list">
+        <div class="list-item flex" *ngFor="let product of newOrder.products">
+          <span class="product-count">{{product.count}}x</span>
+          <div class="icon-container"><img [src]="'/assets/product-icons/' + product.productIcon + '.svg'" *ngIf="product.productIcon" class="icon" alt=""></div>
+          <span class="product-name">{{product.productName}} <span *ngIf="product.unitType">({{product.unitTypeAmount}} {{product.unitType}})</span></span>
+          <span class="spacer"></span>
+          <span class="product-price" *ngIf="!promotion || !promotion.percentageDiscount">{{(product.productPrice * product.count * product.unitTypeAmount / 100) | currency : order.currency}}</span>
+          <span class="product-price" *ngIf="promotion && promotion.percentageDiscount">
+            <span class="crossed-out">{{(product.productPrice * product.unitTypeAmount * product.count / 100) | currency : order.currency}}</span>
+            <span>{{(product.productPrice - product.productPrice * product.unitTypeAmount * promotion.percentageDiscount / 100) * product.count / 100 | currency : order.currency}}</span>
+          </span>
+          <!-- <div class="spacer"></div> -->
+          <button mat-icon-button color="warn" (click)="removeProduct(product)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="center">
+        <br>
+        <button mat-flat-button color="accent" (click)="showAddProductDialog()">ADD PRODUCT</button>
+        <br>
+        <br>
+      </div>
+
+      <mat-divider></mat-divider>
+      <div class="changes">
+        <div *ngIf="!productsChanged.length">
+          You have not made any changes
+        </div>
+        <div *ngFor="let change of productsChanged">
+          <div *ngIf="change.count > 0" class="added">
+            Added <b>{{change.count}}</b> {{change.name}} <span *ngIf="change.unitType">({{change.unitTypeAmount}} {{change.unitType}})</span>
+          </div>
+          <div *ngIf="change.count < 0" class="removed">
+            Removed <b>{{-change.count}}</b> {{change.name}} <span *ngIf="change.unitType">({{change.unitTypeAmount}} {{change.unitType}})</span>
+          </div>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+
+      <br>
+      <div class="formrow">
+        <div class="list">
+          <div class="list-item center">
+            <h2>Before</h2>
+            <app-order-pricing-details [order]="order"></app-order-pricing-details>
+          </div>
+        </div>
+        <div class="list">
+          <div class="list-item center">
+            <h2>After</h2>
+            <app-order-pricing-details [order]="newOrder"></app-order-pricing-details>
+          </div>
+        </div>
+      </div>
+      <br>
+
+      <p>Please note: you can't change the contents of the order after confirming.</p>
+      <mat-checkbox [(ngModel)]="confirmedItems">I have confirmed the contents of the bag</mat-checkbox>
+
+      <div *ngIf="newOrder.totalAmount > order.totalAmount" class="warning-box">
+        We will charge the customer {{(newOrder.totalAmount - order.totalAmount) / 100 | currency : shop.currency}} extra.
+      </div>
+      <div *ngIf="newOrder.totalAmount < order.totalAmount" class="warning-box">
+        We will refund the customer {{-(newOrder.totalAmount - order.totalAmount) / 100 | currency : shop.currency}}.
+      </div>
+
+      <button mat-flat-button color="accent" class="confirm-button" (click)="confirmPickup()" [disabled]="loading || !confirmedItems">
+        CONFIRM PICKUP
+        <span *ngIf="newOrder.totalAmount > order.totalAmount"> <b>(+ {{(newOrder.totalAmount - order.totalAmount) / 100 | currency : shop.currency}})</b></span>
+        <span *ngIf="newOrder.totalAmount < order.totalAmount"> <b>({{(newOrder.totalAmount - order.totalAmount) / 100 | currency : shop.currency}})</b></span>
+      </button>
+
+      <div class="center note">Note: If the customer doesn't answer the door and you can't find a laundry bag outside their home, you can either call the customer or cancel the order.</div>
+    </div>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-subtitle>Scheduled pickup date: {{order.pickupTime | date : 'short'}} - {{getRunEndTime(order.pickupTime)}}</mat-card-subtitle>
+    <mat-card-subtitle>Reference: {{order.reference}}</mat-card-subtitle>
+  </mat-card>
+
+
+</div>

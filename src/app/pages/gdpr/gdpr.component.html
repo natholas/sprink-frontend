@@ -1,0 +1,43 @@
+<div class="page">
+  <a routerLink="/settings" mat-button class="back-button"><mat-icon>arrow_back_ios</mat-icon> BACK</a>
+  <h2 class="page-title">Privacy settings</h2>
+
+  <mat-card>
+    <h3>Communication</h3>
+    <p>We would like to keep you up to date with the latest Sprink offers and services via email, post, SMS and other electrical means.</p>
+    <mat-checkbox name="allowAdvertising" [(ngModel)]="state.user.allowAdvertising" (change)="toggleAdvertising()">Yes please. I would like to stay up to date</mat-checkbox>
+  </mat-card>
+
+  <mat-card>
+    <h3>Download of data</h3>
+    <p>You can download all of the personal data that we have about you here.</p>
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="downloadType">
+      <mat-radio-button value="text" disabled>Text (Not available yet)</mat-radio-button>
+      <mat-radio-button value="json">JSON</mat-radio-button>
+    </mat-radio-group><br>
+    <button (click)="downloadAll()" [disabled]="downloading" mat-flat-button color="accent">DOWNLOAD</button>
+  </mat-card>
+
+  <mat-card>
+    <h3>Deletion of your personal data</h3>
+    <p>You can request for us to delete any personal information that we have about you.</p>
+    <p>Please be aware that if you do this you will lose the ability to login to your Sprink account and your order history.</p>
+    <p>Type your email address below and press the <b>CONFIRM DELETION</b> button to confirm your request.</p>
+
+    <p *ngIf="state.user.balance" style="color: red">
+      <b>Please note: You have {{state.user.balance / 100 | currency : 'GBP'}} of Sprink credit. You will lose this if you continue.</b>
+    </p>
+
+    <div class="formrow">
+      <mat-form-field appearance="outline">
+        <mat-label>Your email address</mat-label>
+        <input matInput type="email" minlength="3" maxlength="50" name="email" [(ngModel)]="email" id="email">
+      </mat-form-field>
+    </div>
+
+    <p *ngIf="email === state.user.email"><b>Warning: There is no way to undo this action.</b></p>
+
+    <button (click)="deletePersonalDetails()" [disabled]="email !== state.user.email || deleting" mat-flat-button color="accent">CONFIRM DELETION</button>
+  </mat-card>
+
+</div>

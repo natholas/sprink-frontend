@@ -1,0 +1,191 @@
+<div class="page">
+
+  <a routerLink="/super-admin-shops" mat-button class="back-button">
+    <mat-icon>arrow_back_ios</mat-icon> BACK
+  </a>
+
+  <mat-card *ngIf="shop.submittedDocuments && !shop.isVerified">
+    <h2>Shop needs to be approved or rejected</h2>
+
+    <div class="formrow">
+      <mat-form-field>
+        <mat-label>Shop density</mat-label>
+        <select matNativeControl name="density" [(ngModel)]="density" required>
+          <option *ngFor="let density of densities" [value]="density">{{density}}</option>
+        </select>
+      </mat-form-field>
+    </div>
+    <button mat-flat-button color="accent" (click)="approveShop()">APPROVE</button>
+
+    <br>
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+    <div class="formrow">
+      <mat-form-field>
+        <mat-label>Rejection reason</mat-label>
+        <textarea matInput type="text" name="rejectionReason" minlength="5" maxlength="500" [(ngModel)]="rejectionReason" id="rejectionReason" required></textarea>
+      </mat-form-field>
+    </div>
+
+    <button mat-stroked-button color="warn" (click)="rejectShop()">REJECT</button>
+  </mat-card>
+
+  <h2>Shop details</h2>
+  <a routerLink="/shop-settings/{{shop._id}}" mat-flat-button color="accent">EDIT SHOP</a>
+  <br>
+  <br>
+  <div class="list">
+    <div class="list-item">
+      <h4>Shop name</h4>
+      <b>{{shop.name}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Company house number</h4>
+      <b><a href="https://beta.companieshouse.gov.uk/company/{{shop.companyHouseNumber}}" class="link" target="_blank">{{shop.companyHouseNumber}}</a></b>
+    </div>
+    <!-- <div class="list-item">
+      <h4>Shop currency</h4>
+      <b>{{shop.currency}}</b>
+    </div> -->
+    <div class="list-item">
+      <h4>Shop range</h4>
+      <b>{{shop.maxDistanceFromShop / 1.60934 | number}} Miles</b>
+    </div>
+    <div class="list-item">
+      <h4>Shop address</h4>
+      <b>{{shop.address.formatted}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Shop address coordinates</h4>
+      <b>{{shop.location.coordinates[1]}}, {{shop.location.coordinates[0]}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Shop Approved</h4>
+      <b>{{shop.isVerified ? 'Yes' : 'No'}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Shop submitted documents</h4>
+      <b>{{shop.submittedDocuments ? 'Yes' : 'No'}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Shop is open</h4>
+      <b>{{shop.isOpen ? 'Yes' : 'No'}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Density</h4>
+      <b>{{shop.density}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Products</h4>
+      <b>{{shop.products.length}} <a routerLink="/shop-settings/products/{{shop._id}}" class="link">(edit)</a></b>
+    </div>
+  </div>
+  
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+
+  <h2>Shop users</h2>
+  <div class="list">
+    <div class="list-item" *ngFor="let user of users">
+      <h4>{{user.userType}}</h4>
+      <b><a routerLink="/super-admin-user/{{user._id}}" class="link">{{user.email}}</a></b>
+    </div>
+  </div>
+
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+
+  <div>
+    <h2>Orders</h2>
+    <div class="list">
+      <a class="list-item link" *ngFor="let order of orders" routerLink="/order-details/{{order._id}}">
+        <h4>{{order.status | orderStatus : order}}</h4>
+        <b>{{order.statusHistory[0].time | date}} ({{(order.totalAmount / 100) | currency : order.currency}})</b>
+      </a>
+      <div *ngIf="!orders.length">No orders yet</div>
+    </div>
+  </div>
+
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+
+  <h2>Shop Payouts</h2>
+  <mat-card *ngFor="let payout of payouts" class="payout">
+    <mat-card-content>
+      <div class="list">
+        <div class="list-item">
+          <h4>Date</h4>
+          <b>{{payout.paidDate | date : 'dd/MM/yyyy'}}</b>
+        </div>
+        <div class="list-item">
+          <h4>Amount</h4>
+          <b>{{payout.amount / 100 | currency : shop.currency}}</b>
+        </div>
+        <div class="list-item">
+          <h4>Reference</h4>
+          <b>{{payout.reference}}</b>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <div *ngIf="!payouts.length">No payouts yet</div>
+
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+
+  <div *ngIf="shop.submittedDocuments && verifications.length">
+    <h2>Shop verification documents</h2>
+    <div *ngFor="let verification of verifications">
+      <p>Submittion date: {{verification.createDate | date}}</p>
+      <b>Submitted documents:</b>
+      <div class="list">
+        <div class="list-item" *ngFor="let document of verification.documents">
+          <b><a href="{{endpoint}}/order_images/{{document.documentName}}" target="_blank" class="link">{{document.documentType}}</a></b>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+  </div>
+</div>
+
+
+<div class="page">
+  <mat-card>
+    <h2>Submit verification for shop</h2>
+  
+    <mat-list>
+      <mat-list-item mat-ripple (click)="triggerInput('picture-id')">
+        <mat-icon *ngIf="!uploads['picture-id']" mat-list-icon color="primary">cloud_upload</mat-icon>
+        <mat-icon *ngIf="uploads['picture-id']" mat-list-icon color="primary">check_circle_outline</mat-icon>
+        <div mat-line>Picture ID</div>
+        <div mat-line>Driver lisence, passport, etc.</div>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item mat-ripple (click)="triggerInput('proof-of-ownership')">
+        <mat-icon *ngIf="!uploads['proof-of-ownership']" mat-list-icon color="primary">cloud_upload</mat-icon>
+        <mat-icon *ngIf="uploads['proof-of-ownership']" mat-list-icon color="primary">check_circle_outline</mat-icon>
+        <div mat-line>Proof of ownership</div>
+        <div mat-line>Utility bill, lease agreement, etc.</div>
+      </mat-list-item>
+    </mat-list>
+  
+    <button mat-flat-button color="primary" (click)="submit()">SUBMIT</button>
+  </mat-card>
+  
+  <input type="file" #imageel name="image" (change)="processImage()" style="display: none;" id="image-upload"
+    accept="image/*,application/pdf" capture>
+</div>
+
+<div class="page" *ngIf="!shop.isOpen">
+  <h2>Hide/unhide Shop</h2>
+  <p>Hidden shops are only hidden from the super admin pages, it has no other effect.</p>
+  <mat-slide-toggle [(ngModel)]="shop.hidden" name="hidden" (change)="saveShopHidden()">
+    <span *ngIf="shop.hidden">Hidden</span>
+    <span *ngIf="!shop.hidden">Not hidden</span>
+  </mat-slide-toggle>
+</div>

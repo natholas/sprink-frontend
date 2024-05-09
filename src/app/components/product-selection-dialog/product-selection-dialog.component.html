@@ -1,0 +1,15 @@
+<div *ngFor="let product of parent2.products" class="product in-expander" matRipple [matRippleColor]="'rgba(167,86,204,0.2)'" (click)="addToCart(product)">
+  <div class="product-icon"><img src="/assets/product-icons/{{product.icon}}.svg"></div>
+  <div class="product-info">
+    <b>{{product.name}}</b>
+    <p>{{product.description}}</p>
+  </div>
+  <div class="product-cta">
+    <span class="price" *ngIf="!percentageDiscount"><b>{{product.price / 100 | currency : 'GBP'}}</b></span>
+    <span class="price" *ngIf="percentageDiscount">
+      <b class="crossed-out">{{product.price / 100 | currency : 'GBP'}}</b>
+      <b class="promo-price">{{(product.price - (product.price * percentageDiscount / 100)) / 100 | currency : 'GBP'}}</b>
+    </span>
+    <mat-icon>add</mat-icon>
+  </div>
+</div>

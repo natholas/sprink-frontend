@@ -1,0 +1,26 @@
+table {
+  width: 100%;
+}
+
+.filter {
+  margin: 24px auto;
+  display: block;
+  width: 200px;
+}
+
+.example-container {
+  height: 400px;
+  width: 550px;
+  overflow: auto;
+}
+
+td.mat-column-star {
+  width: 20px;
+  padding-right: 8px!important;
+}
+
+mat-radio-group {
+  mat-radio-button {
+    margin-right: 12px;
+  }
+}

@@ -1,0 +1,129 @@
+button {
+  &.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+button,
+.button {
+  &.next-to-input {
+    flex: 0 0 auto;
+    margin: .25em 8px;
+    width: auto;
+
+    .break-on-mobile & {
+      @media screen and (max-width: 700px) {
+        width: calc(100% - 16px)!important;
+      }
+    }
+  }
+}
+
+.centered-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-with-icon {
+  padding-left: 12px!important;
+}
+
+a.link,
+.link {
+  color: var(--primary-color);
+  cursor: pointer;
+
+  &.dark-link {
+    color: rgba(0, 0, 0, 0.87);
+  }
+
+  &.white-link {
+    color: white;
+  }
+}
+
+.back-button {
+  margin-bottom: 16px!important;
+  margin-left: -6px!important;
+}
+
+.mat-stroked-button:not([disabled]) {
+  &[color="white"] {
+    border-color: rgba(255, 255, 255, 1)!important;
+  }
+  &[color="accent"] {
+    border-color: #fdd651!important;
+  }
+}
+
+.mat-flat-button:not([disabled]) {
+  &[color="black"] {
+    background-color: black!important;
+    color: white;
+  }
+  &[color="facebook"] {
+    background-color: #4267b2!important;
+    color: white;
+  }
+}
+
+.facebook-share-button {
+  .mat-button-wrapper {
+    display: flex;
+    align-items: center;
+  
+    img {
+      width: 20px;
+      display: block;
+      margin-right: 8px;
+    }
+  }
+}
+
+button {
+  &.full-width {
+    width: 100%;
+  }
+}
+
+.big-button {
+  margin-top: 16px!important;
+  padding-left: 18px!important;
+  padding-right: 18px!important;
+  line-height: 44px!important;
+  font-size: 18px!important;
+}
+
+.document-link {
+  display: flex;
+  padding: 12px;
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+  align-items: center;
+  margin-bottom: 12px;
+
+  .download-icon {
+    flex: 0 0 auto;
+    background-color: var(--primary-color);
+    margin: -12px;
+    padding: 12px;
+  }
+
+  img {
+    flex: 0 0 auto;
+    width: 20px;
+    display: block;
+  }
+
+  > img {
+    margin-right: 12px;
+  }
+
+  span {
+    flex: 1 1 auto;
+    color: var(--primary-color);
+    font-weight: bold;
+  }
+}

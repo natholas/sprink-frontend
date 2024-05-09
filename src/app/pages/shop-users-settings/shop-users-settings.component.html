@@ -1,0 +1,46 @@
+<div class="page">
+  <a routerLink="/shop-settings/{{shop._id}}" mat-button class="back-button">
+    <mat-icon>arrow_back_ios</mat-icon> BACK
+  </a>
+  <h2 class="page-title">Users and permission settings</h2>
+  <p class="page-sub-title">{{shop.name}}</p>
+
+  <br>
+  <mat-card>
+    <mat-card-content>
+      <form name="inviteForm" #inviteForm="ngForm" (submit)="submitForm(inviteForm)">
+        <h2 class="headless">Invite someone to join this shop</h2>
+        <p>Anyone that you invite will be able to pickup and deliver for your shop. They will not be able to change any shop settings or invite other people.</p>
+        <!-- <p>Note: The person that you invite needs to have a fully set up sprink account before you can invite them.</p> -->
+        <div class="formrow">
+          <mat-form-field appearance="outline" class="bottomless field-70">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" minlength="5" maxlength="50" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}" [(ngModel)]="email" id="email" required>
+          </mat-form-field>
+          <div class="send-button-container">
+            <button mat-flat-button class="field-30" color="accent" [disabled]="loading">SEND</button>
+          </div>
+        </div>
+        <div class="input-explanation bottomless">An invitation email will be sent to this address.</div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <br>
+
+  <mat-card *ngIf="invites.length">
+    <mat-card-content>
+      <div class="list">
+        <div *ngFor="let invite of invites" class="list-item">
+          <div class="email">{{invite.email}}</div>
+          <div class="status {{invite.status}}">[{{invite.status === 'accepted' ? 'Accepted' : 'Pending'}}]</div>
+          <div class="delete">
+            <button mat-icon-button color="warn" (click)="deleteInvite(invite._id)" *ngIf="invite._id !== state.user._id">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

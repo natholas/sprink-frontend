@@ -1,0 +1,24 @@
+<mat-card *ngFor="let paymentMethod of paymentMethods" class="payment-method" (click)="select(paymentMethod)">
+  <mat-card-content>
+    <div class="header">
+      <mat-icon color="{{paymentMethod === selectedPaymentMethod ? 'primary' : ''}}">credit_card</mat-icon>
+      <div class="brand">{{paymentMethod.card.brand}}</div><span class="text-primary primary-label" *ngIf="paymentMethod === selectedPaymentMethod"> (Selected)</span>
+    </div>
+    <div class="details">
+      <div>
+        <div class="text-label">
+          Number
+        </div>
+        <div class="cc-number"><span class="dots">••••</span>{{paymentMethod.card.last4}}</div>
+      </div>
+      <div>
+        <div class="text-label">Expires</div>
+        <div class="expiration">
+          {{paymentMethod.card.exp_month | paddTo : 2}}-{{paymentMethod.card.exp_year}}
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<button mat-flat-button color="accent" class="add-payment-method-button" (click)="addPaymentMethod()">ADD CARD</button>

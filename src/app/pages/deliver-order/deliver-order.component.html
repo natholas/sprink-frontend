@@ -1,0 +1,77 @@
+<div class="page">
+
+  <a routerLink="/shop-order/{{order._id}}" mat-button class="back-button"><mat-icon>arrow_back_ios</mat-icon> BACK</a>
+
+  <div class="warning-box desktop-warning">
+    <h3 class="headless bottomless">
+      Note: Order delivery should be done while you're at the customers address.
+    </h3>
+  </div>
+
+  <mat-card>
+    <mat-card-title>Delivery address</mat-card-title>
+    
+    <mat-card-content>
+      <b class="customer-name">{{order.customer.firstName}} {{order.customer.lastName}}</b>
+      {{order.address.formatted}} <span *ngIf="order.address.extraAddressInfo">({{order.address.extraAddressInfo}})</span>
+    </mat-card-content>
+    
+    <a mat-flat-button color="primary" [href]="mapLink" target="_blank" *ngIf="order.status === 'ready' || order.status === 'pickedup'">DIRECTIONS</a>
+  </mat-card>
+
+  <div *ngIf="order.allowDropOffAtDoor" class="good">
+    <b>Contactless delivery is enabled</b>. This means that if the customer does not answer the door you can leave their
+    laundry in a safe place outside their home.
+  </div>
+  <div *ngIf="!order.allowDropOffAtDoor" class="warning">
+    <b>Contactless delivery is disabled</b>. This means that if the customer does not answer the door you need to press
+    the "Customer is not home" button.
+  </div>
+  <br>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Confirm delivery</mat-card-title>
+    </mat-card-header>
+
+    <div class="delivery-proof" *ngIf="!imageB64">
+      <input type="file" #imageel name="image" (change)="processImage()" id="image-upload" accept="image/*" capture>
+      <label for="image-upload" class="file-upload">
+        <div class="desc">Take a picture of the laundry bag on the customers property.</div>
+        <a mat-flat-button color="accent"><mat-icon>camera_alt</mat-icon> Take picture *</a>
+      </label>
+    </div>
+
+    <div class="delivery-proof-image" *ngIf="imageB64">
+      Delivery proof: <a (click)="imageB64 = undefined" class="link">(change)</a>
+      <img [src]="imageB64" alt="">
+    </div>
+
+    <button mat-flat-button color="accent" class="confirm-button" (click)="confirmDelivery()" [disabled]="!imageB64 || loading">CONFIRM DELIVERY</button>
+
+    <div *ngIf="!order.allowDropOffAtDoor">
+      <br>
+      <mat-divider></mat-divider>
+      <br>
+      <div class="center">
+        <button mat-stroked-button (click)="customerIsNotHome()">CUSTOMER IS NOT HOME</button>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Items</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div *ngFor="let product of order.products">{{product.count}}x {{product.productName}} <span *ngIf="product.unitType">({{product.unitTypeAmount}} {{product.unitType}})</span></div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  
+  <mat-card>
+    <mat-card-subtitle>Pickup date: {{order.pickupTime | date: 'short'}} - {{getRunEndTime(order.pickupTime)}}</mat-card-subtitle>
+    <mat-card-subtitle>Reference: {{order.reference}}</mat-card-subtitle>
+  </mat-card>
+
+  
+</div>

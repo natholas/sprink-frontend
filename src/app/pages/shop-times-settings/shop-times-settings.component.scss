@@ -1,0 +1,77 @@
+.no-pickups {
+  font-weight: bold;
+  flex: 1 1 auto;
+}
+
+.save-button {
+  width: 100%;
+}
+
+.input-explanation {
+  margin-top: 4px;
+}
+
+.weekdays {
+  align-items: center;
+  height: 60px;
+
+  &.special {
+    height: auto;
+  }
+
+  .on-off {
+    width: 97px;
+  }
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+}
+
+.special-day {
+  margin-bottom: 16px;
+}
+
+mat-card {
+  width: 100%;
+}
+
+.min-pickup-days-not-reached {
+  font-weight: bold;
+  color: red;
+}
+
+.sprinkrun-end-time {
+  margin-left: 0;
+  margin-top: 8px;
+  flex: 0 0 auto;
+  width: 48px;
+}
+
+.exclusivity {
+  h3 {
+    margin: 0;
+  }
+  
+  p {
+    margin: 0;
+  }
+}
+
+.times-content {
+  display: flex;
+  align-items: center;
+
+  > button {
+    flex: 0 0 auto;
+  }
+
+  > div {
+    flex: 1 1 auto;
+    text-align: right;
+  }
+}
+
+.max-range-slider {
+  width: 100%;
+}

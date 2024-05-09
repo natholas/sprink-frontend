@@ -1,0 +1,13 @@
+<div class="section full-height center-content">
+  <div class="page has-centered-content">  
+    <div class="page-centered-content center small">
+      <mat-card class="center">
+        <h3>We have sent an email verification link to {{state.user.email}}</h3>
+        <p>You need to verify your email to continue. If you have not received the verification email, please check your "Spam" folder.</p>
+
+        <button mat-flat-button color="accent" (click)="sendAgain()" *ngIf="!loading && !success">SEND AGAIN</button>
+        <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+mat-card {
+  margin-bottom: 16px;
+}
+
+.warning-box {
+  background-color: var(--accent-color);
+  padding: 16px;
+}
+
+.desktop-warning {
+  @media screen and (max-width: 1200px) {
+    display: none;
+  }
+}
+
+.order-id {
+  margin-bottom: 16px;
+  opacity: 0.54;
+}
+
+h2 {
+  margin-bottom: 4px;
+}
+
+.customer-name {
+  margin-top: 16px!important;
+  display: block;
+}
+
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ededed;
+  padding: 16px;
+  text-align: center;
+
+  .desc {
+    font-size: 12px;
+    margin-bottom: 12px;
+    line-height: 1.25;
+  }
+}
+
+#image-upload {
+  display: none;
+}
+
+.delivery-proof,
+.delivery-proof-image {
+  margin-bottom: 16px;
+}
+
+.delivery-proof-image {
+  img {
+    width: 100%;
+  }
+}
+
+mat-accordion {
+  margin-bottom: 16px;
+  display: block;
+}
+
+.confirm-button {
+  width: 100%;
+}
+
+.warning {
+  background-color: var(--accent-color);
+  padding: 16px;
+}
+
+.good {
+  background-color: var(--primary-color);
+  padding: 16px;
+  color: white;
+}

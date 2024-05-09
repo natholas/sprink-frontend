@@ -1,0 +1,32 @@
+<div class="page">
+  <mat-card>
+    <mat-card-content>
+      <div class="list">
+        <div class="list-item">
+          <h4>Date</h4>
+          <b>{{payout.paidDate | date : 'dd/MM/yyyy'}}</b>
+        </div>
+        <div class="list-item">
+          <h4>Amount</h4>
+          <b>{{payout.amount / 100 | currency : payout.currency}}</b>
+        </div>
+        <div class="list-item">
+          <h4>Reference</h4>
+          <b>{{payout.reference}}</b>
+        </div>
+        <div class="list-item">
+          <h4>Status</h4>
+          <b>{{payout.status}}</b>
+        </div>
+        <div class="list-item">
+          <h4>Shop</h4>
+          <b><a routerLink="/super-admin-shop/{{payout.shopId}}" class="link">{{payout.shopId}}</a></b>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <h3>Payout cancellation</h3>
+  <p>Use this if the payment didnt go through or was cancelled for some reason.</p>
+  <button mat-stroked-button color="warn" (click)="cancelPayout()">CANCEL PAYOUT</button>
+</div>

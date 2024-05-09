@@ -1,0 +1,52 @@
+<div class="page">
+  <h2 class="page-title">Shop settings</h2>
+  <p class="page-sub-title">{{shop.name}}</p>
+
+  <mat-list role="navigation">
+    <a routerLink="/shop-settings/general/{{shop._id}}" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary">settings</mat-icon>
+      <span>&nbsp;General Shop Settings</span>
+    </a>
+    <a routerLink="/shop-settings/products/{{shop._id}}" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary">shopping_cart</mat-icon>
+      <span>&nbsp;Products and Pricing</span>
+    </a>
+    <a routerLink="/shop-settings/times/{{shop._id}}" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary">access_time</mat-icon>
+      <span>&nbsp;Sprink Run settings</span>
+    </a>
+    <a routerLink="/shop-settings/users/{{shop._id}}" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary">group_add</mat-icon>
+      <span>&nbsp;Users and permission settings</span>
+    </a>
+    <a routerLink="/shop-settings/payout/{{shop._id}}" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary">account_balance</mat-icon>
+      <span>&nbsp;Payout settings</span>
+    </a>
+    <a routerLink="/shop-settings/marketing/{{shop._id}}" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary">star</mat-icon>
+      <span>&nbsp;Marketing settings</span>
+    </a>
+  </mat-list>
+
+  <br><br>
+  <mat-divider></mat-divider>
+  <br><br>
+  
+  <div class="center">
+    <p>Preview what customers will see when they order from your shop.</p>
+    <a routerLink="/new-order-preview" [queryParams]="{shopId: shop._id}" mat-stroked-button>VIEW PREVIEW</a>
+  </div>
+  
+  <br><br>
+  <mat-divider></mat-divider>
+  <br><br>
+  
+  <div class="center">
+    <h2>Have any questions?</h2>
+    <a routerLink="/shop-faqs" mat-flat-button color="primary">VIEW FAQS</a>
+    <span class="or"> or </span>
+    <button (click)="chat.maximize()" mat-stroked-button color="primary">START CHAT</button>
+  </div>
+
+</div>

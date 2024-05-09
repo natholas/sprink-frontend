@@ -1,0 +1,136 @@
+<div class="page">
+  <h2 class="page-title">Details</h2>
+  <a (click)="location.back()" mat-button class="back-button"><mat-icon>arrow_back_ios</mat-icon> BACK</a>
+
+  <div *ngIf="order.status === 'atshop'" class="atshop-message">
+    <h2 class="headless">Action required:</h2>
+    We weren't able to deliver your order. You need to pick up your items from the shop at:
+    <br>
+    <b>{{order.shop.address.formatted}}</b>.
+  </div>
+
+  <br>
+  <mat-card>
+    <div class="list">
+      <div class="list-item">
+        <h4>Reference</h4>
+        <b>{{order.reference}}</b>
+      </div>
+      <div class="list-item">
+        <h4>Status</h4>
+        <b>{{order.status | orderStatus : order}}</b>
+      </div>
+      <div class="list-item">
+        <h4>Contactless delivery</h4>
+        <b>{{order.allowDropOffAtDoor ? 'Enabled' : 'Disabled'}}</b>
+      </div>
+      <div class="list-item" *ngIf="order.customText">
+        <h4>Message to driver / cleaner</h4>
+        <b>{{order.customText}}</b>
+      </div>
+      <div class="list-item" *ngIf="order.status === 'cancelled'">
+        <h4>Cancellation reason</h4>
+        <b>{{order.cancellationReason}}</b>
+      </div>
+      <div class="list-item">
+        <h4>Address</h4>
+        <b>{{order.address.formatted}} <span *ngIf="order.address.extraAddressInfo">({{order.address.extraAddressInfo}})</span></b>
+      </div>
+      <div class="list-item">
+        <h4>Service provider</h4>
+        <b><a class="link" (click)="showShopInfo()">{{order.shopName}}</a></b>
+      </div>
+      <div class="list-item" *ngIf="promotion">
+        <h4>Promotion</h4>
+        <b>{{promotion.title}}</b>
+      </div>
+    </div>
+  </mat-card>
+
+  <br>
+
+  <h4 class="section-title">Charge history</h4>
+  <div *ngIf="!order.chargeHistory.length" class="no-payments">No charges</div>
+  <mat-card *ngFor="let charge of order.chargeHistory" class="payment-box">
+    <div class="split-list">
+      <div class="list">
+        <div class="list-item">
+          <h4>Amount</h4>
+          <b>{{charge.amount / 100 | currency : order.currency}}</b>
+        </div>
+        <div class="list-item">
+          <h4>Time</h4>
+          <b>{{charge.time | date : 'short'}}</b>
+        </div>
+        <div class="list-item" *ngIf="charge.type === 'card'">
+          <h4 *ngIf="charge.amount > 0">Charged to</h4>
+          <h4 *ngIf="charge.amount < 0">Refunded to</h4>
+          <b><mat-icon color="primary">credit_card</mat-icon> •••• {{order.paymentMethodLast4}} ({{order.paymentMethodExpiry}})</b>
+        </div>
+        <div class="list-item" *ngIf="charge.type === 'sprink-credit'">
+          <h4 *ngIf="charge.amount > 0">Charged to</h4>
+          <h4 *ngIf="charge.amount < 0">Refunded to</h4>
+          <b><mat-icon color="primary">account_balance_wallet</mat-icon> Sprink credit</b>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+  <h4 class="section-title">Order contents</h4>
+  <div *ngIf="productsChanged.length" class="changed-items-warning">
+    The contents of your bag did not match what you selected. The shop has corrected the items. changes:
+    <div>
+      <div *ngFor="let change of productsChanged">
+        <div *ngIf="change.count > 0" class="added">
+          Added <b>{{change.count}}</b> {{change.name}}
+        </div>
+        <div *ngIf="change.count < 0" class="removed">
+          Removed <b>{{-change.count}}</b> {{change.name}} <span *ngIf="change.unitType">({{change.unitTypeAmount}} {{change.unitType}})</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <mat-card>
+    <div class="list">
+      <div class="list-item product" *ngFor="let product of order.products">
+        <div class="count">
+          {{product.count}}x
+        </div>
+        <div class="icon">
+          <img *ngIf="product.productIcon" src="/assets/product-icons/{{product.productIcon}}.svg">
+        </div>
+        <div>
+          {{product.productName}} <span *ngIf="product.unitType">({{product.unitTypeAmount}} {{product.unitType}})</span>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+  <br>
+
+  <h4 class="section-title">Receipt</h4>
+  <mat-card>
+    <app-order-pricing-details [order]="order" [showChargedTo]="true"></app-order-pricing-details>
+  </mat-card>
+
+  <div *ngIf="order.status === 'ready'" >
+    <br>
+    <h4 class="section-title">Pickup cancellation</h4>
+    <p>If you cancel your Sprink pickup, the amount will be added to your <a routerLink="/settings/sprink-credit" class="link">Sprink credit</a></p>
+    <div class="formrow">
+      <mat-form-field>
+        <mat-label>Reason</mat-label>
+        <mat-select name="cancellation-reason" [(ngModel)]="cancellationReason">
+          <mat-option *ngFor="let reason of cancellationReasons" [value]="reason">{{reason}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <button mat-stroked-button color="warn" (click)="cancelPickup()">CANCEL PICKUP</button>
+  </div>
+
+  <div *ngIf="state.user.userType === 'superadmin' && order.status === 'delivered'">
+    <br>
+    <h2>Delivery proof:</h2>
+    <img [src]="endpoint + '/order_images/' + order.deliveryImage" alt="" class="full-width">
+  </div>
+</div>

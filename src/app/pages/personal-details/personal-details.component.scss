@@ -1,0 +1,23 @@
+.save-button {
+  width: 100%;
+}
+
+mat-card {
+  width: 100%;
+}
+
+.edit-button {
+  margin-top: 12px;
+}
+
+.address-warning-box {
+  margin-bottom: 16px;
+  padding: 16px;
+  border-radius: 4px;
+  color: var(--warn-color);
+  border: 1px solid var(--warn-color);
+}
+
+.extra-address-info {
+  font-size: 12px;
+}

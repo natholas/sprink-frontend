@@ -1,0 +1,47 @@
+<div class="section accent">
+  <div class="page center">
+    <p class="">To be payed out:</p>
+    <h1 class="headless">{{nextAmount / 100 | currency : shop.currency}}</h1>
+    <button mat-stroked-button (click)="showPayoutDetails(next)">DETAILED BREAKDOWN</button>
+    <p class="note bottomless">Will be paid out at the begining of the month as long as it is at least £100.</p>
+  </div>
+</div>
+
+<div class="page center">
+  <div *ngIf="shop.payoutUpdateNeeded" class="warning-message">
+    <b>We tried to pay you but your bank details seem to be incorrect. Plase update them. We will try the payment again at the end of next month.</b>
+  </div>
+  <a routerLink="/shop-settings/payout/{{shop._id}}" mat-stroked-button>PAYOUT SETTINGS</a>
+</div>
+
+<div class="page">
+  <h2>Payout history:</h2>
+
+  <div *ngIf="!history.length">
+    No payouts made yet
+  </div>
+
+  <mat-card *ngFor="let payout of history">
+    <mat-card-content>
+      <div class="list">
+        <div class="list-item">
+          <h4>Date</h4>
+          <b>{{payout.paidDate | date : 'dd/MM/yyyy'}}</b>
+        </div>
+        <div class="list-item">
+          <h4>Amount</h4>
+          <b>{{payout.amount / 100 | currency : payout.currency}}</b>
+        </div>
+        <div class="list-item">
+          <h4>Reference</h4>
+          <b>{{payout.reference}}</b>
+        </div>
+        <div class="list-item bottomless">
+          <h4>Detailed breakdown</h4>
+          <b class="link" (click)="showPayoutDetails(payout.breakdown)">View</b>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  
+</div>

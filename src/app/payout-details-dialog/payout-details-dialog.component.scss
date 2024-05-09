@@ -1,0 +1,64 @@
+.total-sales {
+  text-align: center;
+  h2 {
+    margin: 0;
+    font-size: 28px;
+  }
+  p {
+    margin: 0 0 4px 0;
+  }
+}
+
+.list-item {
+  h3 {
+    margin: 0;
+  }
+  p {
+    margin: 4px 0;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+}
+
+.bar-chart {
+  position: relative;
+  border: 1px solid rgba(0,0,0,0.25);
+  overflow: hidden;
+  border-radius: 4px;
+  padding: 6px 10px;
+
+  b {
+    position: relative;
+    z-index: 2;
+  }
+
+  .bar-chart-inner {
+    top: 0;
+    left: 0;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    opacity: 0.15;
+  }
+
+  &.chart-cc-fees .bar-chart-inner {
+    background-color: black;
+  }
+
+  &.chart-vat .bar-chart-inner {
+    background-color: black;
+  }
+
+  &.chart-sprink .bar-chart-inner {
+    background-color: black;
+  }
+
+  &.chart-shop {
+    color: white;
+
+    .bar-chart-inner {
+      background-color: var(--primary-color);
+      opacity: 1;
+    }
+  }
+}

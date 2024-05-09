@@ -1,0 +1,137 @@
+<form name="newPromoForm" #newPromoForm="ngForm" (submit)="save(newPromoForm)">
+
+  <h3>Promotion title</h3>
+  <div class="formrow">
+    <mat-form-field appearance="fill">
+      <mat-label>Promotion title (text to show to the customer)</mat-label>
+      <input matInput type="text" name="promoTitle" minlength="3" maxlength="30" [(ngModel)]="promo.title" id="promoTitle" [disabled]="promo.status === 'live'" required>
+    </mat-form-field>
+  </div>
+
+  <!-- <div class="formrow">
+    <mat-form-field appearance="fill">
+      <mat-label>Promotion description (optional)</mat-label>
+      <textarea matInput name="promoDescription" [(ngModel)]="promo.description"></textarea>
+    </mat-form-field>
+  </div> -->
+  <br>
+  <h3>Promotion Settings</h3>
+
+  <div class="formrow break-on-mobile">
+    <mat-form-field appearance="fill">
+      <mat-label>Availability</mat-label>
+      <mat-select name="availability" [(ngModel)]="promo.availability" [disabled]="promo.status === 'live'">
+        <mat-option *ngFor="let type of availabilities" [value]="type">
+          {{type === 'always' ? 'All customers' : 'Only with a special link'}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- <mat-form-field appearance="fill" *ngIf="promo.availability === 'with-code'">
+      <mat-label>Promotion code (</mat-label>
+      <input matInput type="text" name="promoCode" [(ngModel)]="promo.promoCode" id="promoCode" required>
+    </mat-form-field> -->
+  </div>
+
+  <div class="formrow">
+    <mat-form-field appearance="fill">
+      <mat-label>Discount applies to</mat-label>
+      <mat-select name="promoType" [(ngModel)]="promo.type" (selectionChange)="changeAppliesTo()" [disabled]="promo.status === 'live'">
+        <mat-option *ngFor="let promoType of promoTypes" [value]="promoType">
+          {{promoType === 'order' ? 'Whole order' : promoType === 'group' ? 'Only one product group' : 'Only one product'}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="formrow" *ngIf="promo.type === 'product'">
+    <mat-form-field appearance="fill">
+      <mat-label>Product</mat-label>
+      <mat-select name="promoProduct" [(ngModel)]="promo.productId" [disabled]="promo.status === 'live'">
+        <mat-option *ngFor="let product of shop.products" [value]="product._id">
+          {{product.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="formrow" *ngIf="promo.type === 'group'">
+    <mat-form-field appearance="fill">
+      <mat-label>Product group</mat-label>
+      <mat-select name="groupName" [(ngModel)]="promo.groupName" [disabled]="promo.status === 'live'">
+        <mat-option *ngFor="let group of productGroups" [value]="group.name">
+          {{group.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  
+  <div class="formrow" *ngIf="promo.type === 'order'">
+    <mat-form-field appearance="fill">
+      <mat-label>Discount type</mat-label>
+      <mat-select name="discountType" [(ngModel)]="promo.discountType" [disabled]="promo.status === 'live'">
+        <mat-option *ngFor="let discountType of discountTypes" [value]="discountType">
+          {{discountType === 'amount' ? 'A fixed amount' : 'A percent'}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" *ngIf="promo.discountType === 'percent'">
+      <mat-label>Discount percentage</mat-label>
+      <mat-select name="discountPercent" [(ngModel)]="promo.percentageDiscount" [disabled]="promo.status === 'live'" required>
+        <mat-option *ngFor="let percentageDiscountOption of percentageDiscountOptions" [value]="percentageDiscountOption">{{percentageDiscountOption}}%</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" *ngIf="promo.discountType === 'amount'">
+      <mat-label>Discount amount</mat-label>
+      <span matPrefix>{{shop.currency}}&nbsp;</span>
+      <input matInput type="number" appNumberLimit [minVal]="1" [maxVal]="999" name="discountAmount" [(ngModel)]="promo.amountDiscount" [disabled]="promo.status === 'live'" required>
+    </mat-form-field>
+  </div>
+
+  <div class="formrow">
+    <mat-checkbox name="newCustomersOnly" [(ngModel)]="promo.newCustomersOnly" [disabled]="promo.status === 'live'">New customer only</mat-checkbox>
+  </div>
+  
+  <div class="formrow" *ngIf="!promo.newCustomersOnly">
+    <mat-checkbox name="limitUses" [(ngModel)]="limitUses" [disabled]="promo.status === 'live'">Limit uses per customer</mat-checkbox>
+  </div>
+
+  <div class="formrow" *ngIf="limitUses && !promo.newCustomersOnly">
+    <mat-form-field appearance="fill">
+      <mat-label>Max uses per customer</mat-label>
+      <input matInput type="number" appNumberLimit [minVal]="1" [maxVal]="999" name="maxUsesPerCustomer" [(ngModel)]="promo.maxUsesPerCustomer" [disabled]="promo.status === 'live'">
+    </mat-form-field>
+  </div>
+
+  <div class="formrow" *ngIf="promo.discountType === 'amount'">
+    <mat-checkbox name="limitUses" [(ngModel)]="addMinOrderValue" [disabled]="promo.status === 'live'">Add minimum order value</mat-checkbox>
+  </div>
+
+  <div class="formrow" *ngIf="promo.discountType === 'amount' && addMinOrderValue">
+    <mat-form-field appearance="fill">
+      <mat-label>Min order value needed to apply</mat-label>
+      <span matPrefix>{{shop.currency}}&nbsp;</span>
+      <input matInput type="number" [min]="promo.amountDiscount" appNumberLimit [minVal]="1" [maxVal]="999" name="minBasketValue" [(ngModel)]="promo.minBasketValue" required [disabled]="promo.status === 'live'">
+    </mat-form-field>
+  </div>
+
+  <!-- <div class="formrow">
+    <mat-form-field>
+      <mat-label>Start date</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="promo.startDate" name="startDate">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>End date</mat-label>
+      <input matInput [matDatepicker]="picker2" [(ngModel)]="promo.endDate" name="endDate">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+  </div> -->
+
+  <div class="center" *ngIf="promo.status === 'draft'">
+    <br>
+    <button mat-flat-button color="accent">SAVE</button>
+  </div>
+</form>

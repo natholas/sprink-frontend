@@ -1,0 +1,142 @@
+<div class="page">
+  <a (click)="location.back()" mat-button class="back-button"><mat-icon>arrow_back_ios</mat-icon> BACK</a>
+  <h2 class="page-title">Sprink Run settings</h2>
+  <p class="page-sub-title">{{shop.name}}</p>
+
+  <div class="input-explanation">In order to fulfill order pickups and deliveries you'll need to do what we call a 'Sprink Run'. This is a daily task
+  that will need to be assigned to yourself or one of your employees, to pick up any new orders and delivery any ready
+  laundry bags.</div>
+
+  <form name="shopTimesForm" #shopTimesForm="ngForm" (submit)="save(shopTimesForm)">
+    <div>
+      <mat-card>
+        <mat-card-content>
+          <div class="formrow">
+            <mat-form-field class="bottomless">
+              <mat-label>Min time between order and Sprink run</mat-label>
+              <input matInput type="number" appNumberLimit [minVal]="0" [maxVal]="999" name="minTimeBeforeClose" [(ngModel)]="data.minTimeBeforeClose" id="minTimeBeforeClose" required>
+              <span matSuffix>&nbsp; minutes</span>
+            </mat-form-field>
+          </div>
+          <div class="input-explanation"><span>Customers can place an order <b>{{data.minTimeBeforeClose}}</b> minutes before your scheduled Sprink run and expect to have their pickup done on that run.</span></div>
+
+          <div class="formrow">
+            <mat-form-field class="bottomless">
+              <mat-label>Sprink run duration</mat-label>
+              <input matInput type="number" name="sprinkRunDuration" appNumberLimit [minVal]="30" [maxVal]="240" [(ngModel)]="data.sprinkRunDuration" (change)="handleRunDuration()" id="sprinkRunDuration" required>
+              <span matSuffix>&nbsp; minutes</span>
+            </mat-form-field>
+          </div>
+          <div class="input-explanation"><span>This is how long you need to complete a Sprink run.</span></div>
+
+          
+          <b>Max driving distance ({{data.maxDistanceFromShop}} miles)</b>
+          
+          <div>
+            <mat-slider
+              class="max-range-slider"
+              name="maxDistanceFromShop"
+              [max]="10"
+              [min]="1"
+              [step]="0.5"
+              [thumbLabel]="true"
+              [tickInterval]="2"
+              (change)="changeRange()"
+              [(ngModel)]="data.maxDistanceFromShop">
+            </mat-slider>
+          </div>
+          
+          <div class="input-explanation"><span>A customer can request a pickup as long as they live within <b>{{data.maxDistanceFromShop}}</b> Miles of your dry cleaner.</span></div>
+
+          <div class="times-content">
+            <button type="button" *ngIf="data.maxDistanceFromShop" mat-flat-button color="primary" (click)="viewOnMap()">
+              <mat-icon>explore</mat-icon> VIEW
+            </button>
+            <div>
+              <div class="coverage" *ngIf="popCoverageLoading">Loading coverage...</div>
+              <div class="coverage" *ngIf="popCoverage">
+                ~<b> {{popCoverage}}</b> people<br>
+                <span>live within <b>{{data.maxDistanceFromShop}} miles</b> of your drycleaner</span>
+              </div>
+            </div>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+
+      <div><br><br></div>
+
+      <mat-card class="exclusivity" *ngIf="shop.exclusivityDistance && shop.isVerified">
+        <h3>Exclusivity</h3>
+        <p>Your exclusivity range is {{shop.exclusivityDistance / 1.60934 | number}} miles</p>
+      </mat-card>
+
+      <div><br><br></div>
+      
+      <mat-card>
+        <mat-card-content>
+          <h3>Sprink run timeslots</h3>
+          <p>This is the time in which you'll do your run of pickups and deliveries for Sprink customers for that day.</p>
+          <p *ngIf="numberOfPickupDays < 3" class="min-pickup-days-not-reached">you need to do pickups at least 3 days per week</p>
+          <div class="formrow weekdays" *ngFor="let day of pickupTimes">
+            <div class="on-off no-flex">
+              <mat-checkbox class="lineheight-1" [(ngModel)]="day.doPickup" name="doPickup{{day.day}}">Pickup on<b><br>{{day.day | capitalize}}</b></mat-checkbox>
+            </div>
+            <mat-form-field *ngIf="day.doPickup" class="bottomless">
+              <mat-label>Time (hh:mm)</mat-label>
+              <input matInput type="time" name="time{{day.day}}" [(ngModel)]="day.time" required>
+            </mat-form-field>
+            <div *ngIf="day.doPickup" class="sprinkrun-end-time">
+              - {{getPickupEndDate(day.time)}}
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <div>
+        <br>
+        <h3>Exception days</h3>
+        <p>These are individual days of the year which have a different pickup time or no pickup at all.</p>
+        
+        <div *ngIf="!specialDays.length">No exception days set.<br><br></div>
+        <div *ngFor="let day of specialDays; let i=index" class="special-day">
+          <div class="formrow weekdays special">
+            <app-date-picker [data]="day"></app-date-picker>
+            <mat-form-field class="bottomless">
+              <mat-label>Pickup?</mat-label>
+              <mat-select name="dopickup{{day.date}}" [(ngModel)]="day.doPickup">
+                <mat-option [value]="true">Pickup</mat-option>
+                <mat-option [value]="false">No pickup</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf="day.doPickup" class="bottomless">
+              <mat-label>Pickup time (hh:mm)</mat-label>
+              <input matInput type="time" name="time{{day.date}}" [(ngModel)]="day.time" required>
+            </mat-form-field>
+            <div *ngIf="day.doPickup" class="sprinkrun-end-time">
+              - {{getPickupEndDate(day.time)}}
+            </div>
+            <div class="no-flex">
+              <button mat-icon-button type="button" color="warn" (click)="deleteSpecialDay(day)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <button mat-flat-button type="button" color="primary" (click)="addSpecialDay()">ADD EXCEPTION DAY</button>
+        
+        <br><br>
+        <br><br>
+      </div>
+
+      <button mat-flat-button color="accent" class="save-button">SAVE</button>
+    </div>
+  </form>
+</div>
+
+<div class="center">
+  <b>Need help?</b><br>
+  <a class="link" (click)="chat.maximize()">Chat with us</a>
+</div>
+<br><br>

@@ -1,0 +1,66 @@
+<app-cookie-banner></app-cookie-banner>
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav mode="over" [(opened)]="opened" position="end">
+    <mat-list role="navigation" *ngIf="!state.user">
+      <a routerLink="/" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Home</a>
+      <!-- <a [routerLink]="['get-started']" fragment="pricing" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Pricing</a> -->
+      <a routerLink="/continue" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Sign in</a>
+    </mat-list>
+    <mat-list role="navigation" *ngIf="state.user && state.user.userType === 'user'">
+      <a routerLink="/dashboard" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Dashboard</a>
+      <a routerLink="/orders" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Orders</a>
+      <a routerLink="/settings" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Settings</a>
+    </mat-list>
+    <mat-list role="navigation" *ngIf="state.user && state.user.userType === 'admin'">
+      <a routerLink="/shop-admin" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Home</a>
+      <a routerLink="/shop-orders" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Shop orders</a>
+      <a routerLink="/shop-settings" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Shop settings</a>
+      <a routerLink="/shop-payouts" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Payouts</a>
+      <a routerLink="/settings" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Account settings</a>
+    </mat-list>
+    <mat-list role="navigation" *ngIf="state.user && state.user.userType === 'staff'">
+      <a routerLink="/shop-admin" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Home</a>
+      <a routerLink="/shop-orders" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Shop orders</a>
+      <a routerLink="/settings" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Account settings</a>
+    </mat-list>
+    <mat-list role="navigation" *ngIf="state.user && state.user.userType === 'superadmin'">
+      <a routerLink="/super-admin-dashboard" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Dashboard</a>
+      <a routerLink="/settings" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Account settings</a>
+    </mat-list>
+    <div class="spacer"></div>
+    <mat-list role="navigation" *ngIf="!state.user || state.user.userType === 'user'">
+      <a routerLink="/bubbles" mat-list-item role="navigation" (click)="opened = false" mat-ripple class="bubble-link">Bubbles</a>
+      <a routerLink="/help" mat-list-item role="navigation" (click)="opened = false" mat-ripple>Help</a>
+      <a routerLink="/about" mat-list-item role="navigation" (click)="opened = false" mat-ripple>About</a>
+    </mat-list>
+    <mat-list role="navigation" *ngIf="state.user">
+      <mat-list-item role="listitem" style="height: 26px"><mat-card-subtitle style="margin-bottom: 0">Logged in as: {{state.user.email}}</mat-card-subtitle></mat-list-item>
+      <a routerLink="/continue" mat-list-item role="navigation" (click)="logout(); opened = false" mat-ripple>Logout</a>
+    </mat-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="wrapper">
+      <mat-toolbar color="primary" class="header">
+        <!-- <div class="header-content"> -->
+          <a routerLink="{{state.user ? (state.user.userType === 'admin' ? '/shop-admin' : '/dashboard') : '/'}}" class="logo" name="logo">
+            <img src="/assets/sprink-logo-white-small.png" alt="">
+          </a>
+          <div class="spacer"></div>
+          <button mat-icon-button (click)="sidenav.toggle()" name="menu toggler">
+            <mat-icon>menu</mat-icon>
+          </button>
+        <!-- </div> -->
+      </mat-toolbar>
+      <app-install-banner *ngIf="deferredPrompt" [deferredPrompt]="deferredPrompt"></app-install-banner>
+      <div class="router-container">
+        <router-outlet *ngIf="showRouter && !waitingForUpdates"></router-outlet>
+      </div>
+      <div *ngIf="!showRouter || waitingForUpdates">
+        <mat-spinner></mat-spinner>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<app-intro-animation></app-intro-animation>

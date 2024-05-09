@@ -1,0 +1,51 @@
+<div class="section">
+  <div class="page">
+
+    <a mat-button class="back-button" (click)="goBack()">
+      <mat-icon>arrow_back_ios</mat-icon> <b>{{postCode}}</b>
+    </a>
+
+    <!-- <a routerLink="/new-order" [queryParams]="{shopId: shop._id}" *ngFor="let shop of shops; let i = index"> -->
+      <mat-card *ngFor="let shop of shops; let i = index">
+        <img src="{{shop.img}}" class="shop-img" alt="">
+
+        <div class="shop-logo">
+          <div *ngIf="shop.name === 'Mr Pinks Professional Dry Cleaners'"><img src="/assets/mr-pinks-logo.jpg" alt=""></div>
+          <div *ngIf="shop.name !== 'Mr Pinks Professional Dry Cleaners'"><img src="/assets/generic-shop-logo.png" alt=""></div>
+        </div>
+
+        <div class="shop-data">
+          <div class="show-shop-button" (click)="clickShopPopupInfoButton($event, shop)">
+            <mat-icon>storefront</mat-icon>
+          </div>
+
+          <div class="stars">
+            <img src="/assets/star.svg" class="star-icon" alt="">
+            <img src="/assets/star.svg" class="star-icon" alt="">
+            <img src="/assets/star.svg" class="star-icon" alt="">
+            <img src="/assets/star.svg" class="star-icon" alt="">
+            <img src="/assets/star-two-thirds.svg" *ngIf="i === 0" class="star-icon" alt="">
+            <img src="/assets/star-third.svg" *ngIf="i !== 0" class="star-icon" alt="">
+            <span *ngIf="i === 0">(4.8)</span>
+            <span *ngIf="i === 1">(4.2)</span>
+          </div>
+          
+          <h2>{{shop.name}}</h2>
+
+          <div class="shop-meta">
+            <div>Min order: <b>{{shop.minOrderValue / 100 | currency : shop.currency}}</b></div>
+            <div>Delivery fee: <b>{{shop.deliveryFee / 100 | currency : shop.currency}}</b></div>
+          </div>
+
+          <div class="earliest-pickup">
+            <span>Earliest pickup: </span><b>{{shop.pickupTime | date : 'short'}}</b>
+          </div>
+        </div>
+
+        <br>
+        <a routerLink="/new-order" [queryParams]="{shopId: shop._id}" mat-flat-button color="primary" class="full-width">CONTINUE</a>
+      </mat-card>
+    <!-- </a> -->
+
+  </div>
+</div>

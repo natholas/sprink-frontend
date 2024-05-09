@@ -1,0 +1,27 @@
+<div class="section full-height smoke center-content bubbles-container">
+  <!-- <app-bubbles></app-bubbles> -->
+  <div class="page has-centered-content">
+    <div class="page-centered-content center small">
+      <h1 class="page-title">Sign in</h1>
+      <mat-card>
+        <mat-card-content>
+          <form name="loginForm" #loginForm="ngForm" (submit)="submitForm(loginForm)">
+            <mat-form-field>
+              <input matInput type="email" name="email" [(ngModel)]="email" id="email" placeholder="Email" required><br>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="password" name="password" [(ngModel)]="password" id="password" placeholder="Password" required><br>
+            </mat-form-field>
+            <button *ngIf="!loading" mat-flat-button color="primary" class="login-button">SIGN IN</button>
+            <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+          </form>
+        </mat-card-content>
+      </mat-card>
+      
+      <div class="center">
+        <a routerLink="/send-password-reset-email" [queryParams]="{email: email}" class="link forgot-password-link">Forgot your password?</a>
+        <a routerLink="/signup" [queryParams]="{email: email}" class="link forgot-password-link">Dont have an account yet?</a>
+      </div>
+    </div>
+  </div>
+</div>

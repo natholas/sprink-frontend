@@ -1,0 +1,50 @@
+<mat-card class="order" [ngClass]="order.status">
+  <div class="card-drop-down-menu">
+    <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <div mat-menu-item>
+        <mat-icon>receipt</mat-icon>
+        <span>Reference: <b>{{order.reference}}</b></span>
+      </div>
+      <a routerLink="/order-details/{{order._id}}" mat-menu-item>
+        <mat-icon>subject</mat-icon>
+        <span>View details</span>
+      </a>
+    </mat-menu>
+  </div>
+  <mat-card-content>
+    <mat-card-title>
+      <span>{{order.status | orderStatus : order}}</span>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <span *ngIf="order.status === 'ready'">{{order.pickupTime | date : 'short'}} - {{getRunEndTime(order.pickupTime)}}</span>
+      <span *ngIf="order.status === 'pickedup'">{{order.deliveryTime | date : 'short'}} - {{getRunEndTime(order.deliveryTime)}}</span>
+      <span><br>{{order.address.formatted}} <span *ngIf="order.address.extraAddressInfo">({{order.address.extraAddressInfo}})</span></span>
+    </mat-card-subtitle>
+
+    <div class="order-icons">
+      <div *ngFor="let icon of productIconsLimited" class="icon-container"><img src="/assets/product-icons/{{icon}}.svg"></div>
+      <div *ngIf="productIcons.length > 7" class="more-icon">+ {{productIcons.length - 7}}</div>
+    </div>
+
+    <mat-accordion *ngIf="!simpleMode">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Order contents</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div *ngFor="let product of order.products">{{product.count}}x {{product.productName}} <span *ngIf="product.unitType">({{product.unitTypeAmount}} {{product.unitType}})</span></div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-divider *ngIf="!simpleMode"></mat-divider>
+    <p class="pickup-meta-info" *ngIf="order.status === 'ready' && !simpleMode">Please either be at home during the pickup window or make sure the items are sealed in a bag and placed in a publicly accessible area.</p>
+    <p class="pickup-meta-info" *ngIf="order.status === 'pickedup' && !simpleMode && order.allowDropOffAtDoor">Your items will be placed in the same place as they were picked up from.</p>
+    <p class="pickup-meta-info" *ngIf="order.status === 'pickedup' && !simpleMode && !order.allowDropOffAtDoor">Your items will be delivered to you directly.</p>
+    <p class="pickup-meta-info" *ngIf="order.status === 'atshop' && !simpleMode">
+      <b>Action required:</b><br>
+      We weren't able to deliver your order. You need to pick up your items from the shop at:<br><b *ngIf="shop">{{shop.address.formatted}}</b>.
+    </p>
+  </mat-card-content>
+</mat-card>

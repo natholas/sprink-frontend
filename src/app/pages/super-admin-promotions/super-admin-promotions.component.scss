@@ -1,0 +1,39 @@
+.promo {
+  margin-bottom: 16px;
+
+  .promo-actions {
+    display: flex;
+
+    .publish-button {
+      margin-left: 8px;
+    }
+
+    .spacer {
+      flex: 1 1 auto;
+    }
+  }
+}
+
+.promo-status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 16px;
+  background: var(--primary-color);
+  color: white;
+  font-weight: bold;
+
+  &.live {
+    background: var(--accent-color);
+    color: black;
+  }
+}
+
+.promo-status-spacer {
+  padding-bottom: 52px;
+}
+
+mat-card {
+  overflow: hidden;
+}

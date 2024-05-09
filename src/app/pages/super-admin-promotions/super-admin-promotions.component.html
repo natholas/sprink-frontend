@@ -1,0 +1,170 @@
+<div class="page super-wide-page">
+
+  <h2>Promotions</h2>
+
+  <div>
+    <mat-slide-toggle [(ngModel)]="showEnded" name="hidden" (change)="toggleEnded()">
+      <span *ngIf="showEnded">Showing ended promotions</span>
+      <span *ngIf="!showEnded">Hiding ended promotions</span>
+    </mat-slide-toggle>
+  </div>
+  <br>
+
+  <mat-card *ngFor="let promotion of promotions" class="promo">
+    <div class="promo-status {{promotion.status}}">{{promotion.status | capitalize}}</div>
+    <div class="promo-status-spacer"></div>
+    <h2 class="headless">{{promotion.title}} <span class="link" (click)="changePromoTitle(promotion)">(edit)</span></h2>
+
+    <div class="list">
+      <div class="list-item">
+        <h4>Availability:</h4>
+        <b>{{promotion.availability}}</b>
+      </div>
+      <div class="list-item" *ngIf="promotion.availability === 'with-code'">
+        <h4>Promotion code:</h4>
+        <b>{{promotion.promoCode}}</b>
+      </div>
+      <div class="list-item" *ngIf="promotion.percentageDiscount">
+        <h4>Discount amount:</h4>
+        <b>{{promotion.percentageDiscount}}%</b>
+      </div>
+      <div class="list-item" *ngIf="promotion.amountDiscount">
+        <h4>Discount amount:</h4>
+        <b>{{promotion.amountDiscount / 100 | currency : 'GBP'}}</b>
+      </div>
+      <div class="list-item" *ngIf="promotion.sprinkCreditOnUse">
+        <h4>Sprink credit to add after order:</h4>
+        <b>{{promotion.sprinkCreditOnUse / 100 | currency : 'GBP'}}</b>
+      </div>
+      <div class="list-item" *ngIf="promotion.minBasketValue">
+        <h4>Min order value:</h4>
+        <b>{{promotion.minBasketValue / 100 | currency : 'GBP'}}</b>
+      </div>
+      <div class="list-item" *ngIf="promotion.maxBasketValue">
+        <h4>Max order value:</h4>
+        <b>{{promotion.maxBasketValue / 100 | currency : 'GBP'}}</b>
+      </div>
+      <div class="list-item">
+        <h4>New customer only:</h4>
+        <b>{{promotion.newCustomersOnly ? 'YES' : 'NO'}}</b>
+      </div>
+      <div class="list-item">
+        <h4>Created on:</h4>
+        <b>{{promotion.createDate | date : 'dd/MM/yyyy @ hh:mm'}}</b>
+      </div>
+      <div class="list-item" *ngIf="promotion.publishedDate">
+        <h4>Published on:</h4>
+        <b>{{promotion.publishedDate | date : 'dd/MM/yyyy @ hh:mm'}}</b>
+      </div>
+      <div class="list-item" *ngIf="promotion.endedDate">
+        <h4>Deleted on:</h4>
+        <b>{{promotion.endedDate | date : 'dd/MM/yyyy @ hh:mm'}}</b>
+      </div>
+    </div>
+    <div class="promo-actions">
+      <button mat-stroked-button class="edit-button" *ngIf="promotion.status === 'draft'" (click)="editPromotion(promotion)">EDIT</button>
+      <button mat-flat-button color="primary" class="publish-button" *ngIf="promotion.status === 'draft'" (click)="publish(promotion)">PUBLISH</button>
+      <div class="spacer"></div>
+      <button mat-stroked-button color="warn" (click)="deletePromo(promotion)" *ngIf="promotion.status !== 'ended'">
+        <span *ngIf="promotion.status === 'draft'">DELETE</span>
+        <span *ngIf="promotion.status !== 'draft'">UNPUBLISH</span>
+      </button>
+    </div>
+  </mat-card>
+
+
+  <form name="newPromoForm" #newPromoForm="ngForm" (submit)="save(newPromoForm)" id="form">
+
+    <h3>Promotion title</h3>
+    <div class="formrow">
+      <mat-form-field appearance="fill">
+        <mat-label>Promotion title (text to show to the customer)</mat-label>
+        <input matInput type="text" name="promoTitle" minlength="3" maxlength="60" [(ngModel)]="newPromo.title" id="promoTitle" required>
+      </mat-form-field>
+    </div>
+
+    <br>
+    <h3>Promotion Settings</h3>
+    
+    <div class="formrow break-on-mobile">
+      <mat-form-field appearance="fill">
+        <mat-label>Availability</mat-label>
+        <mat-select name="availability" [(ngModel)]="newPromo.availability">
+          <mat-option *ngFor="let type of availabilities" [value]="type">
+            {{type === 'always' ? 'All customers' : 'Only with a special link'}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" *ngIf="newPromo.availability === 'with-code'">
+        <mat-label>Code</mat-label>
+        <input matInput type="text" name="promoCode" [(ngModel)]="newPromo.promoCode" required>
+      </mat-form-field>
+    </div>
+    
+    <div class="formrow">
+      <mat-form-field appearance="fill">
+        <mat-label>Discount type</mat-label>
+        <mat-select name="discountType" [(ngModel)]="newPromo.discountType">
+          <mat-option *ngFor="let discountType of discountTypes" [value]="discountType">
+            {{discountType === 'amount' ? 'A fixed amount' : discountType === 'percent' ? 'A percent' : 'Sprink credit'}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" *ngIf="newPromo.discountType === 'percent'">
+        <mat-label>Discount percentage</mat-label>
+        <mat-select name="discountPercent" [(ngModel)]="newPromo.percentageDiscount" required>
+          <mat-option *ngFor="let percentageDiscountOption of percentageDiscountOptions" [value]="percentageDiscountOption">
+            {{percentageDiscountOption}}%
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" *ngIf="newPromo.discountType === 'amount'">
+        <mat-label>Discount amount</mat-label>
+        <span matPrefix>£&nbsp;</span>
+        <input matInput type="number" appNumberLimit [minVal]="1" [maxVal]="999" name="discountAmount" [(ngModel)]="newPromo.amountDiscount" required>
+      </mat-form-field>
+      <mat-form-field appearance="fill" *ngIf="newPromo.discountType === 'sprink-credit'">
+        <mat-label>Sprink credit to add after order</mat-label>
+        <span matPrefix>£&nbsp;</span>
+        <input matInput type="number" appNumberLimit [minVal]="1" [maxVal]="999" name="sprinkCredit" [(ngModel)]="newPromo.sprinkCreditOnUse" required>
+      </mat-form-field>
+    </div>
+    
+    <div class="formrow">
+      <mat-checkbox name="newCustomersOnly" [(ngModel)]="newPromo.newCustomersOnly">New customer only</mat-checkbox>
+    </div>
+    
+    <div class="formrow" *ngIf="newPromo.discountType === 'amount'">
+      <mat-checkbox name="addMinOrderValue" [(ngModel)]="addMinOrderValue">Add minimum order value</mat-checkbox>
+    </div>
+    
+    <div class="formrow" *ngIf="addMinOrderValue && newPromo.discountType === 'amount'">
+      <mat-form-field appearance="fill">
+        <mat-label>Min order value needed to apply</mat-label>
+        <span matPrefix>£&nbsp;</span>
+        <input matInput type="number" appNumberLimit [minVal]="1" [maxVal]="999" name="minBasketValue" [(ngModel)]="newPromo.minBasketValue" required>
+      </mat-form-field>
+    </div>
+    
+    <div class="formrow" *ngIf="newPromo.discountType === 'percent'">
+      <mat-checkbox name="addMaxOrderValue" [(ngModel)]="addMaxOrderValue">Add maximum order value</mat-checkbox>
+    </div>
+
+    <div class="formrow" *ngIf="addMaxOrderValue">
+      <mat-form-field appearance="fill">
+        <mat-label>Max order value effected by discount.</mat-label>
+        <span matPrefix>£&nbsp;</span>
+        <input matInput type="number" appNumberLimit [minVal]="1" [maxVal]="999" name="maxBasketValue" [(ngModel)]="newPromo.maxBasketValue" required>
+      </mat-form-field>
+    </div>
+    <p *ngIf="addMaxOrderValue">Any amount below this will be discounted, any amount over wont</p>
+    
+    <div class="center">
+      <br>
+      <button mat-flat-button color="accent">SAVE</button>
+    </div>
+
+  </form>
+ 
+</div>

@@ -1,0 +1,59 @@
+<div class="page super-wide-page">
+
+  <h2>Payouts that need to be done</h2>
+
+  <div class="list">
+    <div class="list-item" *ngFor="let shop of shops">
+      <h4>{{shop.name}}</h4>
+      <!-- <b>{{shop.amount / 100 | currency : shop.currency}}</b> -->
+      <a routerLink="/super-admin-do-shop-payout/{{shop.shopId}}" class="link"> TO PAYMENT</a>
+    </div>
+  </div>
+
+  <div *ngIf="!shops.length">
+    No payouts to be done at the moment.
+  </div>
+
+  <br>
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+
+  <h2 class="center">Payout history</h2>
+  <mat-form-field class="filter">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+
+    <ng-container matColumnDef="shopId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Shop </th>
+      <td mat-cell *matCellDef="let element"> {{element.shopId}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="paidDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Paid Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.paidDate | date : 'dd.MM.yyyy'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+      <td mat-cell *matCellDef="let element"> {{element.amount / 100 | currency : element.currency}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="star" stickyEnd>
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <a routerLink="/super-admin-shop-payout/{{element._id}}" mat-icon-button>
+          <mat-icon>arrow_right_alt</mat-icon>
+        </a>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+</div>

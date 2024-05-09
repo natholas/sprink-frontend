@@ -1,0 +1,92 @@
+<div class="section" *ngIf="shop.hasEverReceivedAnOrder">
+  <div class="page">
+    <h2 class="page-title">{{shop.name}}</h2>
+    <div class="center" *ngIf="state.user.userType === 'admin'">
+      <a routerLink="/shop-settings" class="link">Shop settings</a><br>
+      <a routerLink="/shop-payouts" class="link">Payouts</a>
+    </div>
+    <div *ngIf="!shop.isOpen" class="shop-closed-warning"><span>You are currently not accepting orders</span>&nbsp;<a routerLink="/shop-settings/general/{{shop._id}}" class="link">(change)</a></div>
+    <div *ngIf="shop.payoutUpdateNeeded" class="shop-closed-warning"><span>Payout method needs updating</span>&nbsp;<a routerLink="/shop-settings/payout/{{shop._id}}" class="link">(change)</a></div>
+
+
+    <div class="collection-orders">
+      <div class="section-title">Awaiting collection</div>
+      <a *ngFor="let order of collectionOrders" routerLink="/shop-order/{{order._id}}">
+        <mat-card>
+          <b>{{order.reference}} - {{order.customerName}}</b>
+        </mat-card>
+      </a>
+      <mat-card *ngIf="!collectionOrders.length">No orders awaiting collection.</mat-card>
+    </div>
+
+    <div class="section-title">Today pickups and drop offs</div>
+    <mat-card *ngIf="!todayOrders.length">No pickups or drop offs today</mat-card>
+
+    <a routerLink="/shop-order/{{order._id}}" class="pickup-box" *ngFor="let order of todayOrders">
+      <mat-card>
+        <div class="order-title" *ngIf="order.status === 'ready'">
+          <mat-icon>arrow_upward</mat-icon> <span>Pick up</span>&nbsp;<span *ngIf="order.overDue" class="text-warn">(OVERDUE)</span>
+        </div>
+        <div class="order-title" *ngIf="order.status === 'pickedup'">
+          <mat-icon>arrow_downward</mat-icon> <span>Delivery</span>&nbsp;<span *ngIf="order.overDue" class="text-warn">(OVERDUE)</span>
+        </div>
+        <mat-card-content>
+          <b>{{order.address.formatted}} <span *ngIf="order.address.extraAddressInfo">({{order.address.extraAddressInfo}})</span></b>
+          <span *ngIf="order.distance !== undefined">
+            ({{order.distance / 1.6 | number : '1.0-2'}} miles away)
+          </span>
+          <!-- <a routerLink="/shop-order/{{order._id}}" mat-flat-button color="accent">VIEW</a> -->
+        </mat-card-content>
+      </mat-card>
+    </a>
+
+    <div class="section-title">Future pickups and drop offs</div>
+    <mat-card *ngIf="!futureOrders.length">No pickups or drop offs after today</mat-card>
+
+    <a routerLink="/shop-order/{{order._id}}" class="pickup-box" *ngFor="let order of futureOrders">
+      <mat-card>
+        <div class="order-title" *ngIf="order.status === 'ready'">
+          <mat-icon>arrow_upward</mat-icon> <span>Pick up</span>
+        </div>
+        <div class="order-title" *ngIf="order.status === 'pickedup'">
+          <mat-icon>arrow_downward</mat-icon> <span>Delivery</span>
+        </div>
+        <mat-card-content>
+          <b>{{order.address.formatted}} <span *ngIf="order.address.extraAddressInfo">({{order.address.extraAddressInfo}})</span></b>
+          <span *ngIf="order.distance !== undefined">
+            ({{order.distance / 1.6 | number : '1.0-2'}} miles away)
+          </span><br>
+          <span *ngIf="order.status === 'ready'">Pickup date: <b>{{order.pickupTime | date : 'short'}} - {{getRunEndTime(order.pickupTime)}}</b></span>
+          <span *ngIf="order.status === 'pickedup'">Delivery date: <b>{{order.deliveryTime | date : 'short'}} - {{getRunEndTime(order.deliveryTime)}}</b></span>
+        </mat-card-content>
+      </mat-card>
+    </a>
+  </div>
+</div>
+
+<div class="section" *ngIf="!shop.hasEverReceivedAnOrder">
+  <div class="page center">
+    <img src="/assets/float.png" class="page-image" alt="">
+    <h1>No orders yet.</h1>
+    <p>We will send you an email when a customer places an order.</p>
+
+    <p>In the meantime you can change any of your shops settings by clicking on the menu in the top right.</p>
+  </div>
+</div>
+
+<div class="section" *ngIf="state.user.userType !== 'staff'">
+  <div class="page">
+    
+    <br><br>
+    <mat-divider></mat-divider>
+    <br><br>
+    
+    <div class="center">
+      <h2>Have any questions?</h2>
+      <a routerLink="/shop-faqs" mat-flat-button color="primary">VIEW FAQS</a>
+      <span class="or"> or </span>
+      <button (click)="chat.maximize()" mat-stroked-button color="primary">START CHAT</button>
+    </div>
+    
+  </div>
+</div>

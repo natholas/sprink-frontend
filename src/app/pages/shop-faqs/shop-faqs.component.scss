@@ -1,0 +1,21 @@
+.become-a-partner-title {
+  margin-bottom: 6px;
+}
+
+.center-vertically {
+  align-items: center;
+}
+
+.sprinky-image {
+  width: 70%;
+  max-width: 200px;
+  display: block;
+  margin: 0 0 0 auto;
+  transform: scaleX(-1);
+}
+
+.page-split-1-3 {
+  @media screen and (max-width: 700px) {
+    display: none;
+  }
+}

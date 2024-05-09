@@ -1,0 +1,98 @@
+<div class="page">
+  <a routerLink="/shop-settings/{{shop._id}}" mat-button class="back-button"><mat-icon>arrow_back_ios</mat-icon> BACK</a>
+  <h2 class="page-title">General Shop Settings</h2>
+  <p class="page-sub-title">{{shop.name}}</p>
+  <div *ngIf="!origShop.isOpen && shop.isVerified" class="shop-closed-warning"><span>You are currently not accepting orders</span></div>
+
+  <mat-card>
+    <mat-card-content>
+      <form name="shopForm" #shopForm="ngForm" (submit)="submitForm(shopForm)">
+
+        <mat-slide-toggle [(ngModel)]="shop.isOpen" *ngIf="shop.isVerified" name="isOpen">
+          <span *ngIf="shop.isOpen">Open (accepting orders)</span>
+          <span *ngIf="!shop.isOpen">Closed (not accepting orders)</span>
+        </mat-slide-toggle>
+        <br>
+        <br>
+
+        <div class="formrow">
+          <mat-form-field>
+            <mat-label>Company house number (CRN) (if applicable)</mat-label>
+            <input matInput type="tel" name="companyHouseNumber" [disabled]="shop.submittedDocuments && state.user.userType !== 'superadmin'" minlength="8" maxlength="8" [(ngModel)]="shop.companyHouseNumber" (input)="lookupCompany()" id="companyHouseNumber">
+          </mat-form-field>
+        </div>
+
+        <div class="formrow">
+          <mat-form-field>
+            <mat-label>VAT number (if applicable)</mat-label>
+            <input matInput type="tel" name="vatNumber" [disabled]="shop.submittedDocuments && state.user.userType !== 'superadmin'" minlength="1" maxlength="32" [(ngModel)]="shop.vatNumber" id="vatNumber">
+          </mat-form-field>
+        </div>
+
+        <div class="formrow">
+          <mat-form-field>
+            <mat-label>Shop na<span style="display: none;">iow</span>me</mat-label>
+            <input matInput type="text" minlength="5" maxlength="50" name="shop" [disabled]="shop.submittedDocuments && state.user.userType !== 'superadmin'" [(ngModel)]="shop.name" id="shop" required>
+          </mat-form-field>
+        </div>
+
+        <div class="formrow">
+          <mat-form-field>
+            <mat-label>Shop phone number</mat-label>
+            <input matInput type="tel" maxlength="12" minlength="7" name="phoneNumber" [(ngModel)]="shop.phoneNumber" id="phoneNumber" required>
+          </mat-form-field>
+        </div>
+
+        <div class="formrow">
+          <mat-form-field>
+            <mat-label>Time zone</mat-label>
+            <select matNativeControl name="timezone" [(ngModel)]="shop.timeZone" required [disabled]="true">
+              <option *ngFor="let timezone of timezones" [value]="timezone">{{timezone}}</option>
+            </select>
+          </mat-form-field>
+        </div>
+        
+        <div class="formrow">
+          <mat-form-field>
+            <mat-label>Shop currency</mat-label>
+            <select matNativeControl name="currency" [(ngModel)]="shop.currency" required disabled>
+              <option [value]="'USD'">USD</option>
+              <option [value]="'GBP'">GBP</option>
+            </select>
+          </mat-form-field>
+        </div>
+
+        <app-address [input]="shop.address.formatted" *ngIf="!shop.submittedDocuments || state.user.userType === 'superadmin'" (onSelect)="onSelect($event)"></app-address>
+
+        <div class="formrow" *ngIf="shop.submittedDocuments && state.user.userType !== 'superadmin'">
+          <mat-form-field>
+            <mat-label>Address</mat-label>
+            <input matInput type="text" name="address" [disabled]="true" [(ngModel)]="shop.address.formatted" id="address" required>
+          </mat-form-field>
+        </div>
+
+        <div *ngIf="shop.submittedDocuments">
+          <p>You can't change your address as you have already submitted your business for approval.</p>
+          <p>If you need to change this, contact us using our <a class="link" (click)="openChat()">chat</a>.</p>
+        </div>
+        
+        <div><br></div>
+
+        <button mat-flat-button class="save-button" color="accent" [disabled]="loading">SAVE</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+<br><br>
+<mat-divider></mat-divider>
+<br><br>
+
+<div class="center">
+  <h2>Have any questions?</h2>
+  <a routerLink="/shop-faqs" mat-flat-button color="primary">VIEW FAQS</a>
+  <span class="or"> or </span>
+  <button (click)="chat.maximize()" mat-stroked-button color="primary">START CHAT</button>
+</div>
+<br><br>

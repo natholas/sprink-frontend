@@ -1,0 +1,40 @@
+.install-banner {
+  position: fixed;
+  top: 56px;
+  z-index: 3;
+  background-color: var(--primary-darker-color);
+  color: white;
+  padding: 8px 16px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  animation: fade-in-install-banner .5s ease;
+
+  @media screen and (min-width: 600px) {
+    top: 64px;
+  }
+
+  h3 {
+    margin: 0;
+    flex: 1 1 auto;
+    margin-left: 2px;
+    font-weight: 400;
+  }
+}
+
+button {
+  margin-right: 16px;
+}
+
+.later {
+  cursor: pointer;
+}
+
+@keyframes fade-in-install-banner {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}

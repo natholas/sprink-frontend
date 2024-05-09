@@ -1,0 +1,117 @@
+<div class="page">
+
+  <a routerLink="/super-admin-users" mat-button class="back-button">
+    <mat-icon>arrow_back_ios</mat-icon> BACK
+  </a>
+
+  <h2>{{user.email}} <span *ngIf="!user.isVerified">(not verified)</span></h2>
+
+  <div class="list">
+    <div class="list-item">
+      <h4>User type</h4>
+      <b>{{user.userType}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Name</h4>
+      <b *ngIf="user.firstName">{{user.firstName}} {{user.lastName}}</b>
+      <b *ngIf="!user.firstName">N/A</b>
+    </div>
+    <div class="list-item">
+      <h4>Email</h4>
+      <b *ngIf="user.email">{{user.email}}</b>
+      <b *ngIf="!user.email">N/A</b>
+    </div>
+    <div class="list-item">
+      <h4>Email verified</h4>
+      <b *ngIf="user.email">{{user.isVerified ? 'Yes' : 'No'}}</b>
+      <b *ngIf="!user.email">N/A</b>
+    </div>
+    <div class="list-item">
+      <h4>Phone number</h4>
+      <b *ngIf="user.phoneNumber">{{user.phoneNumber}}</b>
+      <b *ngIf="!user.phoneNumber">N/A</b>
+    </div>
+    <div class="list-item">
+      <h4>Address</h4>
+      <b *ngIf="user.address.formatted">{{user.address.formatted}} <span *ngIf="user.address.extraAddressInfo">({{user.address.extraAddressInfo}})</span></b>
+      <b *ngIf="!user.address.formatted">N/A</b>
+    </div>
+    <div class="list-item">
+      <h4>Address coordinates</h4>
+      <b *ngIf="user.address.coordinates[0]">{{user.address.coordinates[0]}}, {{user.address.coordinates[1]}}</b>
+      <b *ngIf="!user.address.coordinates[0]">N/A</b>
+    </div>
+    <div class="list-item">
+      <h4>Joined on</h4>
+      <b>{{user.createDate | date}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Allow advertising</h4>
+      <b>{{user.allowAdvertising ? 'Yes' : 'No'}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Bubbles points</h4>
+      <b>{{user.allowAdvertising.bubbleCount | numberRounding}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Sprink user ID</h4>
+      <b>{{user._id}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Stripe ID</h4>
+      <b><a href="https://dashboard.stripe.com/customers/{{user.stripeId}}" class="link">{{user.stripeId}}</a></b>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div>
+    <h3>Payment methods</h3>
+    <div class="list">
+      <div class="list-item" *ngFor="let paymentMethod of paymentMethods">
+        <h4>Payment method</h4>
+        <b class="cc-number"><span class="dots">••••</span>{{paymentMethod.card.last4}} ({{paymentMethod.card.brand}})</b>
+      </div>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div>
+    <h3>Orders</h3>
+    <div class="list">
+      <a class="list-item link" *ngFor="let order of orders" routerLink="/order-details/{{order._id}}">
+        <h4>{{order.status | orderStatus : order}}</h4>
+        <b>{{order.statusHistory[0].time | date}} ({{(order.totalAmount / 100) | currency : order.currency}})</b>
+      </a>
+      <div *ngIf="!orders.length">No orders yet</div>
+    </div>
+  </div>
+
+  <div *ngIf="shop">
+    <br><br>
+    <mat-divider></mat-divider>
+    <br><br>
+    <p>This user is a shop admin</p>
+    <h3>{{shop.name}}</h3>
+    <a routerLink="/super-admin-shop/{{shop._id}}" mat-flat-button color="accent">VIEW</a>
+  </div>
+
+
+  <div *ngIf="user.userType === 'user'">
+    <br><br>
+    <mat-divider></mat-divider>
+    <br><br>
+    <p>Make this noob a super admin</p>
+    <button (click)="makeSuperAdmin()" mat-flat-button color="accent">MAKE DUDE A SUPER ADMIN</button>
+  </div>
+
+  <div *ngIf="user.userType === 'superadmin'">
+    <br><br>
+    <mat-divider></mat-divider>
+    <br><br>
+    <p>Remove god powers from this user</p>
+    <button (click)="unMakeSuperAdmin()" mat-flat-button color="accent">TURN THIS SUPER ADMIN INTO A PLEB</button>
+  </div>
+
+</div>

@@ -1,0 +1,144 @@
+<div class="section accent primary bubbles-container">
+  <app-bubbles></app-bubbles>
+  <div class="page center page-intro">
+    <h1>The contactless laundry app</h1>
+    <p>Join sprink and become a pioneer for this exciting technology</p>
+  </div>
+</div>
+
+<div class="section smoke ribbon-container">
+  <div class="ribbon dark">
+    <!-- <span>Limited time offer</span><br> -->
+    <b *ngIf="activationFeeDiscountPercent < 100">{{activationFeeDiscountPercent}}% activation fee!</b>
+    <b *ngIf="activationFeeDiscountPercent === 100">No activation fee!</b>
+    <br>
+    <b>Free exclusivity area!</b></div>
+  <div class="page wide-page spaced center">
+    <div>
+      <h2 class="headless section-title become-a-partner-title">Interested?</h2>
+      <p>Start the process of becoming a parter by entering your email below.<br>We'll send you some information about what's needed to list your dry cleaner on Sprink.</p>
+    </div>
+    <app-partner-form></app-partner-form>
+    <!-- <br> -->
+    <!-- <a routerLink="/login" class="link">Already have a shop account?</a> -->
+  </div>
+</div>
+
+<div class="section">
+  <div class="page center sprink-text">
+    <h2 class="section-title headless">Find out how it’s done</h2>
+    <div class="video-frame">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/pJIkpMJBDAQ" class="full-width" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<div class="section smoke">
+  <div class="page super-wide-page center sprink-text sprink-text-small">
+    <h2 class="section-title headless">Easy to use</h2>
+    <div class="columns points">
+      <div class="col-4 mcol-12 point">
+        <div class="point-icon-container"><img src="/assets/float-small.png" class="point-icon" alt=""></div>
+        <h2>Burst onto a new market</h2>
+        <p>With Sprink you’ll gain access to a whole new type of customer who normally wouldn't use dry cleaning.</p>
+      </div>
+      <div class="col-4 mcol-12 point">
+        <div class="point-icon-container"><img src="/assets/boost-small.png" class="point-icon" alt=""></div>
+        <h2>Boost your image</h2>
+        <p>Let us do the marketing. We promote directly to people in your area so you don't have to.</p>
+      </div>
+      <div class="col-4 mcol-12 point">
+        <div class="point-icon-container"><img src="/assets/fresh-small.png" class="point-icon" alt=""></div>
+        <h2>Stay fresh</h2>
+        <p>Innovation is the way forward. Adapting to new technology will keep your business relevant and popular among younger generations</p>
+      </div>
+    </div>
+
+    <div class="center">
+      <button (click)="scrollToSignup()" mat-flat-button color="primary">GET STARTED</button>
+    </div>
+  </div>
+</div>
+
+<div class="section accent">
+  <div class="page sprink-text">
+    <h2 class="section-title center headless">What you get</h2>
+    <br>
+    <div class="list feature-list">
+      <div class="list-item">
+        <mat-icon>check_circle_outline</mat-icon> <span>Your dry cleaner on the Sprink app</span>
+      </div>
+      <div class="list-item">
+        <mat-icon>check_circle_outline</mat-icon> <span>Exposure from our individualized online marketing campaigns</span>
+      </div>
+      <!-- <div class="list-item">
+        <mat-icon>check_circle_outline</mat-icon> <span>Sprink laundry bags for your online customers</span>
+      </div> -->
+      <!-- <div class="list-item">
+        <mat-icon>check_circle_outline</mat-icon> <span>Free Sprink merchandising</span>
+      </div> -->
+      <div class="list-item">
+        <mat-icon>check_circle_outline</mat-icon> <span>Free exclusivity zone tailored to your area for the first year <b>(worth £150, Limited time only)</b></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="page sprink-text">
+    <h2 class="section-title center headless">What we need from you</h2>
+    <br>
+    <div class="list feature-list">
+      <div class="list-item with-legal">
+        <mat-icon>play_circle_outline</mat-icon> <span>9.5% commission on each order that is done through Sprink<br>
+        <span class="legal">We will deduct this from the payouts automatically</span></span>
+      </div>
+      <div class="list-item with-legal">
+        <mat-icon>play_circle_outline</mat-icon> <span><span class="crossed-out">£220</span> £{{220 - (220 / 100 * activationFeeDiscountPercent) | number}} admin fee (excluding VAT) <b>({{activationFeeDiscountPercent}}% discount, limited time only)</b><br>
+        <span class="legal">Nothing paid upfront. We’ll deduct this fee from your first payout</span></span>
+      </div>
+      <div class="list-item">
+        <mat-icon>play_circle_outline</mat-icon> <span>Pickup and deliver customer's orders</span>
+      </div>
+      <!-- <div class="list-item">
+        <mat-icon>play_circle_outline</mat-icon> <span>Display our sticker on your shop window and counter</span>
+      </div> -->
+    </div>
+
+    <div class="center">
+      <br>
+      <a routerLink="/shop-faqs" class="link">Frequently asked questions</a>
+    </div>
+  </div>
+</div>
+
+<div class="section smoke">
+  <div class="page sprink-text center">
+    <h1>Pricing & payouts</h1>
+    <p>See a detailed breakdown of how you will get paid</p>
+    <div class="center">
+      <a routerLink="/payouts-explained" mat-flat-button color="accent">PRICING INFO</a>
+    </div>
+  </div>
+</div>
+
+<div class="section accent" id="sign-up">
+  <div class="page wide-page sprink-text">
+
+    <div class="page-split center-vertically">
+      <div class="page-split-2-3">
+        <h1 class="headless">Convinced?</h1>
+        <p>Start the process of becoming a parter by entering your email below. We'll send you some information about what's
+        needed to list your dry cleaner on Sprink.</p>
+        <mat-card>
+          <app-partner-form></app-partner-form>
+        </mat-card>
+      </div>
+      <div class="page-split-1-3">
+        <img src="/assets/order-cropped.png" class="sprinky-image" alt="">
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

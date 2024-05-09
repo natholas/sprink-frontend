@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target" : { 
+    "namespace": "android_app",
+    "package_name": "com.sprinkclean.twa",
+    "sha256_cert_fingerprints": ["89:64:F7:24:36:AF:2C:55:65:20:69:DD:4D:CD:D6:44:77:7C:17:2F:D4:A6:A8:D6:63:0E:75:1D:E7:B2:E9:12"]
+  }
+}]

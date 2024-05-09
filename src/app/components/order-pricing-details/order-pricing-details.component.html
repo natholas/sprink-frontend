@@ -1,0 +1,32 @@
+<div class="list">
+  <div class="list-item">
+    <h4>Sub total</h4>
+    <b>{{(order.subTotal) / 100 | currency : order.currency}}</b>
+  </div>
+  <div class="list-item" *ngIf="order.totalDiscountAmount">
+    <h4>Discount</h4>
+    <b>- {{order.totalDiscountAmount / 100 | currency : order.currency}}</b>
+  </div>
+  <div class="list-item">
+    <h4>Delivery fee</h4>
+    <b>{{(order.deliveryFee) / 100 | currency : order.currency}}</b>
+  </div>
+  <div class="list-item bottomless">
+    <h4>Total</h4>
+    <b>{{order.totalAmount / 100 | currency : order.currency}}</b>
+  </div>
+</div>
+<div *ngIf="showChargedTo">
+  <hr>
+  <h3>Charged to:</h3>
+  <div class="list">
+    <div class="list-item" *ngIf="getChargedAmount('card')">
+      <h4>Card: •••• {{order.paymentMethodLast4}} ({{order.paymentMethodExpiry}})</h4>
+      <b>{{getChargedAmount('card') / 100 | currency : order.currency}}</b>
+    </div>
+    <div class="list-item bottomless" *ngIf="getChargedAmount('sprink-credit')">
+      <h4>Sprink credit</h4>
+      <b>{{getChargedAmount('sprink-credit') / 100 | currency : order.currency}}</b>
+    </div>
+  </div>
+</div>

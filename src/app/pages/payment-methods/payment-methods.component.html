@@ -1,0 +1,48 @@
+<div class="page">
+  <a routerLink="/settings" mat-button class="back-button"><mat-icon>arrow_back_ios</mat-icon> BACK</a>
+  <h2 class="page-title">Saved Cards</h2>
+
+  <p class="page-sub-title" *ngIf="!paymentMethods.length">No cards added yet.</p>
+  <mat-card *ngFor="let paymentMethod of paymentMethods" class="payment-method">
+    <div class="card-drop-down-menu">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="makePrimary(paymentMethod)" [disabled]="paymentMethod === primary">
+          <mat-icon>star</mat-icon>
+          <span>Make primary</span>
+        </button>
+        <button mat-menu-item (click)="deletePaymentMethod(paymentMethod)" color="warn">
+          <mat-icon>delete</mat-icon>
+          <span>Delete card</span>
+        </button>
+      </mat-menu>
+    </div>
+    <mat-card-content>
+      <div class="header">
+        <mat-icon color="{{paymentMethod === primary ? 'primary' : ''}}">credit_card</mat-icon>
+        <div class="brand">{{paymentMethod.card.brand}}</div><span class="text-primary primary-label" *ngIf="paymentMethod === primary"> (Primary)</span>
+      </div>
+      <div class="details">
+        <div>
+          <div class="text-label">
+            Number
+          </div>
+          <div class="cc-number"><span class="dots">••••</span>{{paymentMethod.card.last4}}</div>
+        </div>
+        <div>
+          <div class="text-label">Expires</div>
+          <div class="expiration">
+            {{paymentMethod.card.exp_month | paddTo : 2}}-{{paymentMethod.card.exp_year}}
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="center">
+    <br>
+    <button (click)="addPaymentMethod()" mat-flat-button color="accent">ADD CARD</button>
+  </div>
+</div>

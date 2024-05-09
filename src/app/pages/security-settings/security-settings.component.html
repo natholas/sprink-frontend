@@ -1,0 +1,35 @@
+<div class="page">
+  <a (click)="location.back()" mat-button class="back-button"><mat-icon>arrow_back_ios</mat-icon> BACK</a>
+  <h2 class="page-title">Security settings</h2>
+
+  <h3>Password change</h3>
+  <p>Change your password. Note: This password is not needed when logging in with social login.</p>
+
+  <mat-form-field class="bottomless full-width">
+    <mat-label>New password</mat-label>
+    <input matInput type="password" name="newPassword" [(ngModel)]="newPassword" id="newPassword" required>
+  </mat-form-field>
+  <mat-progress-bar [color]="getPasswordIndicatorColor()" mode="determinate" [value]="getPasswordStrength()"></mat-progress-bar>
+
+  <br>
+
+  <mat-form-field class="full-width">
+    <mat-label>Repeat password</mat-label>
+    <input matInput type="password" name="repeatPassword" [(ngModel)]="repeatPassword" id="repeatPassword" required>
+  </mat-form-field>
+
+  <button mat-flat-button color="primary" [disabled]="changingPassword" (click)="changePassword()">SAVE PASSWORD</button>
+  <br>
+  <br>
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+
+  <h3>Two factor authentication</h3>
+  <p>Two factor authentication means that we will send a code to your email address when you login. This code will need to be entered to login.</p>
+
+  <mat-checkbox class="no-flex" [(ngModel)]="twoFactorAuthentication" (change)="changeTwoFactorAuthentication()">
+    Two factor authentication
+  </mat-checkbox>
+
+</div>

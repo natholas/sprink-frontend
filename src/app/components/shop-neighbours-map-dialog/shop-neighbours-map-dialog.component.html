@@ -1,0 +1,6 @@
+<div class="page">
+  <h2>Your pickup area</h2>
+  <p>The area in purple is the area where you will receive orders from. Note: If there are other shops close to you, some of your pickup area might be cut off.</p>
+</div>
+
+<app-shops-map [shops]="shops" [center]="shop.location.coordinates" [zoomLevel]="12" [singleShopMode]="true"></app-shops-map>

@@ -1,0 +1,46 @@
+<div class="page">
+  <a routerLink="/shop-settings/{{shop._id}}" mat-button class="back-button">
+    <mat-icon>arrow_back_ios</mat-icon> BACK
+  </a>
+  <h2 class="page-title">Payout settings</h2>
+  <p class="page-sub-title">{{shop.name}}</p>
+
+  <div *ngIf="shop.payoutUpdateNeeded" class="warning-message">
+    <b>We tried to pay you but your bank details seem to be incorrect. Plase update them. We will try the payment again at the end of next month.</b>
+  </div>
+
+  <br>
+  <mat-card>
+    <mat-card-content>
+      <form name="payoutSettingsForm" #payoutSettingsForm="ngForm" (submit)="submitForm(payoutSettingsForm)">
+        <h2 class="headless">Set up your payout details</h2>
+        <p>These details will be used to pay you at the end of each month.</p>
+        <p>Payments will only be done when the total amount to be paid is more than the minimum payout amount.</p>
+        <div class="formrow">
+          <mat-form-field appearance="outline">
+            <mat-label>Payee name</mat-label>
+            <input matInput type="text" name="payeeName" minlength="2" maxlength="32" [(ngModel)]="payeeName" id="payeeName" required>
+          </mat-form-field>
+        </div>
+        <div class="formrow">
+          <mat-form-field appearance="outline">
+            <mat-label>Sort code</mat-label>
+            <input matInput type="tel" name="sortCode" minlength="8" maxlength="8" pattern="[0-9]{2}-[0-9]{2}-[0-9]{2}" [(ngModel)]="sortCode" id="sortCode" (input)="editSortCode()" required>
+          </mat-form-field>
+        </div>
+        <div class="formrow">
+          <mat-form-field appearance="outline">
+            <mat-label>Account number</mat-label>
+            <input matInput type="tel" name="accountNumber" minlength="6" maxlength="8" pattern="[0-9]{7,8}" [(ngModel)]="accountNumber" id="accountNumber" required>
+          </mat-form-field>
+        </div>
+        <div class="formrow">
+          <mat-checkbox name="isPersonalAccount" [(ngModel)]="isPersonalAccount">This account is a personal account</mat-checkbox>
+        </div>
+        <div class="center">
+          <button mat-flat-button color="accent">SAVE</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,13 @@
+<div class="center">
+  <h2 class="headless">{{shop.name}}</h2>
+  
+  <p>{{shop.address.formatted}}</p>
+  <p>
+    <a href="tel:{{shop.phoneNumber}}" class="link phone-number">
+      <mat-icon>call</mat-icon>
+      <span>{{shop.phoneNumber}}</span>
+    </a>
+  </p>
+  
+  <button mat-flat-button color="primary" (click)="continue()">CONTINUE</button>
+</div>

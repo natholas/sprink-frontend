@@ -1,0 +1,75 @@
+.sprinky-on-bike {
+  width: 100%;
+  position: relative;
+  padding-bottom: 57%;
+
+  > img {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    &:nth-child(1) { // wheels
+      width: 82.5%;
+      top: 75%;
+      left: 15%;
+    }
+
+    &:nth-child(2) { // bike
+      width: 100%;
+      top: 0;
+      left: 0;
+      animation: sprinky-bike .5s ease infinite;
+    }
+
+    &:nth-child(3) { // body
+      width: 54%;
+      top: -41%;
+      left: 23%;
+      animation: sprinky-body .5s ease 0.03s infinite;
+    }
+
+    &:nth-child(4) { // head
+      width: 28.5%;
+      top: -70%;
+      left: 32%;
+      animation: sprinky-head .5s ease 0.06s infinite;
+    }
+
+    &:nth-child(5) { // box
+      width: 28%;
+      top: -13%;
+      left: -5%;
+      animation: sprinky-box .5s ease 0.06s infinite;
+    }
+  }
+}
+
+.sprinky-container {
+  padding-top: 39%;
+  padding-bottom: 7%;
+  padding-left: 4%;
+  width: 100%;
+}
+
+
+@keyframes sprinky-bike {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(2%); }
+  100% { transform: translateY(0); }
+}
+@keyframes sprinky-body {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(1%); }
+  100% { transform: translateY(0); }
+}
+@keyframes sprinky-head {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(4%); }
+  100% { transform: translateY(0); }
+}
+@keyframes sprinky-box {
+  0% { transform: translateY(0) scaleX(-1); }
+  50% { transform: translateY(3%) scaleX(-1); }
+  100% { transform: translateY(0) scaleX(-1); }
+}

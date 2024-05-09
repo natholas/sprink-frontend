@@ -1,0 +1,37 @@
+<h2>Products to import:</h2>
+
+<div *ngFor="let product of products" class="product-box">
+  Name: <b>{{product.name}}</b><br>
+  Group name: <b>{{product.groupName}}</b><br>
+  Product description: <b>{{product.description}}</b><br>
+  Product price: <b>{{product.price / 100 | currency : 'GBP'}}</b>
+
+  <br>
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+</div>
+
+<div *ngIf="!rejections.length">
+  All data loaded successfully.
+</div>
+
+<div *ngIf="rejections.length" class="rejections">
+  <h2>Failed to import: </h2>
+  <div *ngFor="let row of rejections">
+    Data: <b>{{row.row.join(', ')}}</b><br>
+    Reason: <b>{{row.reason}}</b>
+  
+    <br>
+    <br>
+    <mat-divider></mat-divider>
+    <br>
+  </div>
+
+</div>
+
+
+<p><b>Note: This will overwrite your existing products.</b></p>
+
+<button mat-stroked-button class="cancel-button" (click)="cancel()">CANCEL</button>
+<button mat-flat-button color="accent" (click)="confirm()">CONFIRM IMPORT</button>

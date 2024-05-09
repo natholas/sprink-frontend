@@ -1,0 +1,27 @@
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+  box-shadow: none;
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+  border-radius: 0;
+  margin: 0 -24px;
+
+  &:last-child {
+    margin-bottom: -24px;
+  }
+}
+
+.promo-price {
+  display: block;
+}
+
+mat-panel-title {
+  align-items: center;
+}
+
+.product-name {
+  flex: 1 1 auto;
+}
+
+.from-price {
+  margin-right: 6px;
+  font-weight: normal;
+}

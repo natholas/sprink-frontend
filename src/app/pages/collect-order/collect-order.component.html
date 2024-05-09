@@ -1,0 +1,32 @@
+<div class="page">
+
+  <a routerLink="/shop-order/{{order._id}}" mat-button class="back-button">
+    <mat-icon>arrow_back_ios</mat-icon> BACK
+  </a>
+
+  <mat-card>
+    <mat-card-title>Order collection</mat-card-title>
+    <br>
+    <div>
+      <b>Customer:</b> {{order.customer.firstName}} {{order.customer.lastName}}
+    </div>
+    <br>
+    <mat-checkbox name="confirmedIdentity" [(ngModel)]="confirmedIdentity">I have confirmed the customer's identity</mat-checkbox>
+    <br><br>
+    <button mat-flat-button color="accent" class="full-width" [disabled]="!confirmedIdentity || loading" (click)="confirm()">CONFIRM COLLECTION</button>
+  </mat-card>
+
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Items</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div *ngFor="let product of order.products">{{product.count}}x {{product.productName}} <span *ngIf="product.unitType">({{product.unitTypeAmount}} {{product.unitType}})</span></div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <mat-card>
+    <mat-card-subtitle>Pickup date: {{order.pickupTime | date: 'short'}}</mat-card-subtitle>
+    <mat-card-subtitle>Reference: {{order.reference}}</mat-card-subtitle>
+  </mat-card>
+</div>

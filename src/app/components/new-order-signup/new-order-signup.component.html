@@ -1,0 +1,12 @@
+<h2>Enter your email to continue</h2>
+<p>We will use this email to inform you about possible changes to your order.</p>
+<form name="signupForm" #signupForm="ngForm" (submit)="submitForm(signupForm)">
+  <mat-form-field>
+    <input matInput type="email" minlength="5" maxlength="50" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}" [(ngModel)]="email" id="email" placeholder="Email" required><br>
+  </mat-form-field>
+  <br>
+  <button mat-flat-button *ngIf="!loading" color="primary" class="signup-button">CONTINUE</button>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+</form>
+
+<br><br>

@@ -1,0 +1,38 @@
+.payout {
+  margin-bottom: 24px;
+}
+
+mat-list {
+  mat-list-item {
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+#image-upload {
+  opacity: 0;
+  position: absolute;
+  top: -100;
+  pointer-events: none;
+}
+
+.already-submitted-warning {
+  padding: 12px;
+  background: var(--accent-color);
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.submittion-warning {
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.upload-both-warning {
+  color: red;
+}

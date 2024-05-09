@@ -1,0 +1,38 @@
+<div class="section full-height smoke center-content">
+  <!-- <app-bubbles></app-bubbles> -->
+  <div class="page">
+    <h1 class="page-title" *ngIf="!checkoutMode">Sign in to Sprink</h1>
+    <p class="center" *ngIf="!checkoutMode">
+      Create a free Sprink account.
+    </p>
+    <h2 class="checkout-login-title center" *ngIf="checkoutMode">
+      Create a free Sprink account to continue with your order.
+    </h2>
+    <mat-card *ngIf="!loading">
+      <button class="social-login-button facebook" (click)="signInWithFB()" mat-flat-button>
+        <img src="/assets/facebook-alt-white.svg" alt="">
+        <span>Continue with Facebook</span>
+      </button>
+      <button class="social-login-button google" (click)="signInWithGoogle()" mat-flat-button>
+        <img src="/assets/google.svg" alt="">
+        <span>Continue with Google</span>
+      </button>
+      <div class="sprink-login">
+        <a routerLink="/signup" mat-stroked-button>
+          <span *ngIf="checkoutMode">Continue with email</span>
+          <span *ngIf="!checkoutMode">SIGN UP</span>
+        </a>
+        <a routerLink="/login" *ngIf="!checkoutMode" mat-stroked-button>SIGN IN</a>
+      </div>
+    </mat-card>
+    <mat-card *ngIf="loading">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </mat-card>
+    <div class="legal center">By signing into Sprink you agree with our <a routerLink="/terms" class="link"><b>terms</b></a>.</div>
+
+    <div class="center become-a-partner-info" *ngIf="!checkoutMode">
+      Looking to list your dry cleaner on Sprink? Visit the "become a partner" page.
+      <a routerLink="/become-a-partner" mat-stroked-button>BECOME A PARTNER</a>
+    </div>
+  </div>
+</div>

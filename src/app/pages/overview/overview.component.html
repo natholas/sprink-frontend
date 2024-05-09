@@ -1,0 +1,136 @@
+<div class="page" *ngIf="order">
+  <h2 class="page-title">Confirm Pickup</h2>
+  <p class="page-sub-title"><span>Your dry cleaning will be done by:</span><br><a class="link" (click)="openShopPopup()">{{order.shop.name}}.</a></p>
+
+  <div *ngIf="order.demoMode" class="demo-mode-info">Preview mode enabled</div>
+
+  <div *ngIf="order.promotion">
+    <div class="text-sticker">{{order.promotion.title}}</div>
+    <br>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <div class="pickup-info">
+        <div>
+          <mat-form-field class="order-date-field bottomless">
+            <input matInput [matDatepickerFilter]="canPickupOnDate.bind(this)" [matDatepicker]="picker" [(ngModel)]="pickupTime" placeholder="Pickup date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker (closed)="changeDates()"></mat-datepicker>
+          </mat-form-field>
+          <span class="time">{{order.pickupTime | date : 'shortTime'}} - {{getPickupEndDate(order.pickupTime)}}</span>
+        </div>
+        <div>
+          <mat-form-field class="order-date-field bottomless">
+            <input matInput [matDatepickerFilter]="canDeliverOnDate.bind(this)" [matDatepicker]="picker2" [(ngModel)]="deliveryTime" placeholder="Drop off date">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2 (closed)="changeDates()"></mat-datepicker>
+          </mat-form-field>
+          <span class="time">{{order.deliveryTime | date : 'shortTime'}} - {{getPickupEndDate(order.deliveryTime)}}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="payment-method simple" *ngIf="selectedPaymentMethod">
+    <div class="header">
+      <mat-icon>credit_card</mat-icon>
+      <div class="brand">{{selectedPaymentMethod.card.brand}}</div>
+    </div>
+    <div class="details">
+      <div class="cc-number"><span class="dots">••••</span>{{selectedPaymentMethod.card.last4}}</div>
+    </div>
+    <button class="edit-button" mat-icon-button (click)="openPaymentMethodSelectionSheet()">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </mat-card>
+
+  <mat-card *ngIf="!selectedPaymentMethod" class="no-payment-methods">
+    <div class="text">
+      <h3>Card</h3>
+      <p>No cards set up yet.</p>
+    </div>
+    <button mat-flat-button color="accent" (click)="addPaymentMethod()">ADD CARD</button>
+  </mat-card>
+
+  <mat-card *ngIf="state.user.balance" class="sprink-credit">
+    <h3>Sprink credit</h3>
+    <p class="bottomless">You have <b>{{state.user.balance / 100 | currency : order.shop.currency}}</b> in Sprink credit.</p>
+    <p class="headless">After scheduling this pickup you will have <b>{{getSprinkCreditRemaining() / 100 | currency : order.shop.currency}}</b> remaining.</p>
+  </mat-card>
+  
+  <!-- <mat-card *ngIf="!order.imageB64" class="no-picture">
+    <div class="text">
+      <h3>Picture</h3>
+      <p>Add a picture of where you will leave your laundry</p>
+    </div>
+    <input type="file" #imageel name="image" (change)="processImage()" id="image-upload" accept="image/*" capture>
+    <label for="image-upload">
+      <a mat-flat-button color="accent" color="accent">TAKE PICTURE</a>
+    </label>
+  </mat-card> -->
+
+  <!-- <mat-card *ngIf="order.imageB64" class="has-picture">
+    <mat-card-content>
+      <div class="image-container">
+        <img [src]="order.imageB64" alt="">
+        <div class="actions">
+          <p>Picture will help driver find your laundry.</p>
+          <button mat-stroked-button (click)="order.imageB64 = undefined">
+            CHANGE IMAGE
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card> -->
+
+  
+
+  <!-- <div class="center" *ngIf="!addCustomMessage">
+    <br>
+    <span class="link" (click)="addCustomMessage = true">Add a note</span>
+  </div> -->
+
+  <mat-form-field class="add-message bottomless" appearance="outline"> <!--*ngIf="addCustomMessage"-->
+    <mat-label>Note to driver / cleaner</mat-label>
+    <textarea matInput (change)="saveOrder()" rows="4" maxlength="240" [(ngModel)]="order.customText"></textarea>
+  </mat-form-field>
+  <div class="note-length">
+    {{order.customText.length}} - 240
+  </div>
+
+  <br>
+  <mat-checkbox name="allowDropOffAtDoor" [(ngModel)]="order.allowDropOffAtDoor">Enable contactless delivery</mat-checkbox>
+
+  <div *ngIf="order.allowDropOffAtDoor" class="order-description headless">
+    We'll drop off your laundry in a safe place outside your home if you're not there.
+  </div>
+
+  <div *ngIf="!order.allowDropOffAtDoor" class="order-description headless">
+    If you're not at home when we try to deliver, you will need to pick up your items from the shop.
+  </div>
+
+  <br>
+
+</div>
+
+<div class="bottom-footer-bit">
+  <div class="page page-bottom">
+    <p class="terms">
+      By pressing the button below you indicate that you agree to our <a routerLink="/terms" class="link">terms of service</a>.
+    </p>
+
+    <button mat-stroked-button class="order-summary" (click)="showOrderDetails()">ORDER SUMMARY</button>
+
+    <button *ngIf="!loading" mat-flat-button color="accent" (click)="confirmPayment()" [disabled]="!selectedPaymentMethod || order.total < order.shop.minOrderValue">
+      <span *ngIf="selectedPaymentMethod && (order.total) >= order.shop.minOrderValue">CONFIRM PAYMENT ({{order.total / 100 | currency : order.shop.currency}})</span>
+      <span *ngIf="!selectedPaymentMethod">ADD A CARD</span>
+      <span *ngIf="(order.total) < order.shop.minOrderValue">(min: {{order.shop.minOrderValue / 100 | currency : order.shop.currency}})</span>
+    </button>
+    <div class="center" *ngIf="order.total < order.shop.minOrderValue">
+      <br>
+      <a routerLink="/new-order" class="link">Add items</a>
+    </div>
+    <mat-spinner *ngIf="loading" color="accent"></mat-spinner>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<h2 class="headless">{{group.name}}</h2>
+
+<form name="editForm" #editForm="ngForm" (submit)="save(editForm)">
+  <div class="formrow" *ngIf="state.user.userType === 'superadmin'">
+    <mat-form-field appearance="fill">
+      <mat-label>Group name (SUPER ADMIN ONLY)</mat-label>
+      <input matInput type="text" minlength="3" maxlength="34" pattern="[A-Za-z]{1}[A-Za-z -()/]*" name="groupName" [(ngModel)]="group.name" required>
+    </mat-form-field>
+  </div>
+  <div class="formrow">
+    <mat-form-field appearance="fill">
+      <mat-label>Processing time</mat-label>
+      <mat-select name="processingTime" [(ngModel)]="group.processingTime" required>
+        <mat-option [value]="1">1 day</mat-option>
+        <mat-option [value]="2">2 days</mat-option>
+        <mat-option [value]="3">3 days</mat-option>
+        <mat-option [value]="4">4 days</mat-option>
+        <mat-option [value]="5">5 days</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="input-explanation"><span>The amount of days it takes to process this type of product.</span></div>
+  </div>
+
+  <div class="center">
+    <!-- <div class="spacer"></div> -->
+    <button mat-flat-button color="accent">APPLY</button>
+  </div>
+  <button mat-stroked-button color="warn" type="button" (click)="deleteGroup()" *ngIf="state.user.userType === 'superadmin'">SUPERADMIN DELETE</button>
+</form>

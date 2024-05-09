@@ -1,0 +1,19 @@
+<div class="center">
+  <h2 class="headless bottomless">{{parent1.name}}</h2>
+  <p>Select a type</p>
+</div>
+
+<div [@.disabled]="disableAnimation" *ngIf="parent1.parent2s.length > 1">
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let parent2 of parent1.parent2s; let i = index" [expanded]="i === 0" [expanded]="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span class="product-name">{{parent2.name}}</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-product-selection-dialog [parent2]="parent2" [percentageDiscount]="percentageDiscount" (onSelect)="onSelect($event)"></app-product-selection-dialog>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+
+<app-product-selection-dialog *ngIf="parent1.parent2s.length === 1" [parent2]="parent1" [percentageDiscount]="percentageDiscount" (onSelect)="onSelect($event)"></app-product-selection-dialog>

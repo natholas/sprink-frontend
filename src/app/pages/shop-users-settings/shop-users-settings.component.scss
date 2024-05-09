@@ -1,0 +1,32 @@
+.send-button-container {
+  margin-top: .25em;
+  margin-bottom: .25em;
+
+  button {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .email {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .status {
+    font-weight: bold;
+
+    &.accepted {
+      color: var(--primary-color);
+    }
+  }
+}

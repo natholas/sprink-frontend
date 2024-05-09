@@ -1,0 +1,31 @@
+<div class="page">
+  <a routerLink="/shop-settings/{{shop._id}}" mat-button class="back-button">
+    <mat-icon>arrow_back_ios</mat-icon> BACK
+  </a>
+  <h2 class="page-title">Marketing Settings</h2>
+  <p class="page-sub-title">{{shop.name}}</p>
+
+
+  <br><br>
+  <mat-divider></mat-divider>
+  <br><br>
+
+  <h2>Link your customers to Sprink</h2>
+  <p>Put this link on your website. When your customers use it they are guaranteed to be connected to your shop (as long as they are in range)</p>
+
+  <div class="link-display">
+    <b>https://sprinkclean.com?utm_source={{shop._id}}&utm_medium=shop-website&utmCampaign=shop-link</b>
+  </div>
+</div>
+
+<br><br>
+<mat-divider></mat-divider>
+<br><br>
+
+<div class="center">
+  <h2>Have any questions?</h2>
+  <a routerLink="/shop-faqs" mat-flat-button color="primary">VIEW FAQS</a>
+  <span class="or"> or </span>
+  <button (click)="chat.maximize()" mat-stroked-button color="primary">START CHAT</button>
+</div>
+<br><br>

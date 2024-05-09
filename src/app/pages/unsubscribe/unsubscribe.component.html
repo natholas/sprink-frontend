@@ -1,0 +1,18 @@
+<div class="section">
+  <div class="page" *ngIf="success">
+    <img src="/assets/boost.png" class="centered-image" alt="">
+    <h1>You are now unsubscribed</h1>
+    <p>If you would like to resubscribe you can do so here:</p>
+    <a routerLink="/settings/gdpr" mat-flat-button color="accent">SUBSCRIBE</a>
+  </div>
+  <div class="page center" *ngIf="alreadyUnsubscribed">
+    <img src="/assets/boost.png" class="centered-image" alt="">
+    <h1>You are already unsubscribed</h1>
+    <p>If you would like to resubscribe you can do so here:</p>
+    <a routerLink="/settings/gdpr" mat-flat-button color="accent">SUBSCRIBE</a>
+  </div>
+  <div class="page" *ngIf="error">
+    <h1>Error</h1>
+    <p>An unexpected error occured. Please try again later.</p>
+  </div>
+</div>

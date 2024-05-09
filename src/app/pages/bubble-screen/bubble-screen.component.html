@@ -1,0 +1,5 @@
+<div class="section primary bubbles-container">
+  <h2>Pop as many bubbles as you can!</h2>
+  <app-bubbles [startCount]="user.bubbleCount" (onUpdate)="onUpdate($event)" [multiplier]="multiplier"></app-bubbles>
+  <span class="point-count">{{user.bubbleCount | numberRounding}}</span>
+</div>

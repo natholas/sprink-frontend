@@ -1,0 +1,28 @@
+<div class="page">
+  <a (click)="location.back()" mat-button class="back-button">
+    <mat-icon>arrow_back_ios</mat-icon> BACK
+  </a>
+  <h2 class="page-title">Sprink credit settings</h2>
+
+  <br>
+  <mat-card>
+    <div class="center">
+      Sprink credit:
+      <h1 class="headless">{{state.user.balance / 100 | currency : 'GBP'}}</h1>
+      <div *ngIf="state.user.balance">
+        <p>Get more Sprink credit by <a routerLink="/settings/referrals" class="link">inviting your friends</a>.</p>
+        <!-- <p>You can use your Sprink credit when placing an order.</p> -->
+        <a routerLink="/new-order" mat-flat-button color="primary">ORDER</a>
+      </div>
+      <div *ngIf="!state.user.balance">
+        <p>Get more Sprink credit by <a routerLink="/settings/referrals" class="link">inviting your friends</a>.</p>
+        <!-- <p class="bottomless">You can use your Sprink credit when placing an order.</p> -->
+      </div>
+    </div>
+  </mat-card>
+
+  <div class="center legal">
+    If you need help, please <a routerLink="/help" class="link">Contact us</a>.
+  </div>
+
+</div>

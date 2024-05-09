@@ -1,0 +1,12 @@
+<mat-card>
+  <form name="postcodeForm" #postcodeForm="ngForm" (submit)="searchPostCode()">
+    <p>Enter your postcode to get started</p>
+    <div class="formrow">
+      <mat-form-field appearance="outline" class="bottomless">
+        <mat-label>Enter your postcode</mat-label>
+        <input matInput type="text" name="postCode" [(ngModel)]="postCode" id="postCode">
+      </mat-form-field>
+      <button mat-flat-button color="accent" class="next-to-input" id="postcode-search" [disabled]="loading">START</button>
+    </div>
+  </form>
+</mat-card>

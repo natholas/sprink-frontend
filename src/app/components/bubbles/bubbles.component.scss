@@ -1,0 +1,19 @@
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.35;
+  animation: canvas-enter 1s ease;
+}
+
+@keyframes canvas-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.35;
+  }
+}

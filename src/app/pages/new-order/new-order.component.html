@@ -1,0 +1,59 @@
+<div class="header-bar">
+  <div class="page">
+    <div class="order-address" *ngIf="state.user">
+      <span>{{state.user.address.formatted}} <span *ngIf="state.user.address.extraAddressInfo">({{state.user.address.extraAddressInfo}})</span></span>
+      <a routerLink="/settings/personal-details" color="primary" mat-icon-button [queryParams]="{'returnUrl': 'new-order'}">
+        <mat-icon>edit</mat-icon>
+      </a>
+    </div>
+    <div class="order-shop">
+      Cleaned by: <span (click)="openShopPopup()" class="link">{{shop.name}}</span>
+    </div>
+  </div>
+</div>
+<div class="page">
+
+  <div *ngIf="demoMode" class="demo-mode-info">Preview mode enabled</div>
+
+  <h2 class="page-title">Pick Items</h2>
+  <p class="page-sub-title">Pick the items that you want to get dry cleaned.</p>
+
+  <div *ngIf="promotion">
+    <div class="text-sticker">{{promotion.title}}</div>
+    <br>
+  </div>
+
+  <app-checkout-product-selection (onAddToCart)="addToCart($event)" [cart]="cart" [promotion]="promotion" [shop]="shop"></app-checkout-product-selection>
+
+  <div class="center open-order-help">
+    <a class="link dark-link" (click)="openOrderHelp()">Not sure?</a>
+  </div>
+
+</div>
+
+<mat-toolbar class="footer">
+  <mat-toolbar-row>
+    <div class="empty-cart-message" *ngIf="!cart.length">No items added yet.</div>
+    <div class="cart-items" *ngIf="cart.length">
+      <div class="cart-item" *ngFor="let item of cart" (click)="removeFromCart(item.product)">
+        <div class="product-icon" matBadge="{{item.count}}" matBadgeColor="accent"><img src="/assets/product-icons/{{item.product.icon}}.svg"></div>
+      </div>
+    </div>
+  </mat-toolbar-row>
+  <mat-toolbar-row>
+    <div class="cart-extra">
+      <button mat-button (click)="openCartDetails()">DETAILS</button>
+      <div class="spacer"></div>
+      <div class="amount" *ngIf="!discountAmount">{{total / 100 | currency : shop.currency}}</div>
+      <div class="amount" *ngIf="discountAmount">
+        <span class="crossed-out">{{subTotal / 100 | currency : shop.currency}}</span>
+        <span>{{total / 100 | currency : shop.currency}}</span>
+      </div>
+      <button mat-raised-button color="primary" (click)="continue()">
+        <span *ngIf="total >= shop.minOrderValue && cart.length">CONTINUE</span>
+        <span *ngIf="total >= shop.minOrderValue && !cart.length">ADD ITEM</span>
+        <span *ngIf="(total) < shop.minOrderValue">(min: {{shop.minOrderValue / 100 | currency : shop.currency}})</span>
+      </button>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

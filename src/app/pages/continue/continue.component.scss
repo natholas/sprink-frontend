@@ -1,0 +1,82 @@
+h2.checkout-login-title {
+  line-height: 1.4;
+}
+
+.page {
+  width: 340px;
+  max-width: 100%;
+
+  mat-card {
+    >* {
+      margin-bottom: 16px;
+      width: 100%;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      a {
+        width: calc(50% - 8px);
+        
+        &:first-child {
+          margin-right: 16px;
+
+          &:last-child {
+            width: 100%;
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.page-title {
+  margin-bottom: 16px;
+  font-size: 32px;
+  line-height: 1;
+  position: relative;
+}
+
+.social-login-button {
+  display: flex;
+  align-items: center;
+  line-height: 44px;
+  padding: 0 10px;
+
+  span {
+    position: relative;
+    top: 1px;
+  }
+
+  &.facebook {
+    background-color: #4267b2;
+    color: white;
+  }
+
+  &.google {
+    background-color: black;
+    color: white;
+  }
+
+  img {
+    flex: 0 0 auto;
+    width: 24px;
+    margin-right: 12px;
+  }
+}
+
+.become-a-partner-info {
+  margin-top: 16px;
+  position: relative;
+  z-index: 10;
+  color: black;
+  background-color: var(--accent-color);
+  padding: 10px;
+  border-radius: 4px;
+  font-weight: bold;
+
+  a {
+    margin-top: 10px;
+  }
+}

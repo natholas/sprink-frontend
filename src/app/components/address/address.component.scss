@@ -1,0 +1,28 @@
+
+
+.list-item {
+  display: flex;
+  margin-bottom: 0;
+  padding: 4px;
+
+  &:hover {
+    color: var(--primary-color);
+    background-color: rgba(0,0,0,0.05);
+    cursor: pointer;
+  }
+}
+
+.no-address-found {
+  color: red;
+  font-size: 12px;
+}
+
+.address-preview {
+  display: flex;
+  align-items: center;
+
+  > span {
+    display: block;
+    flex: 1 1 auto;
+  }
+}

@@ -1,0 +1,6 @@
+<div *ngIf="showCookieBannerInitial" class="cookie-banner" [ngClass]="{'dont-show': !showCookieBanner}">
+  <p>This site uses cookies to provide you with a great user experience. By using Sprink, you accept our <a routerLink="/privacy" class="link">use of cookies.</a></p>
+  <button (click)="accept()" mat-icon-button>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>

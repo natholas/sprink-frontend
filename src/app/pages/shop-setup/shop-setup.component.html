@@ -1,0 +1,99 @@
+<div class="page">
+
+  <h2 class="page-title">Shop setup</h2>
+  <p class="page-sub-title" *ngIf="shop.name">{{shop.name}}</p>
+  <p class="page-sub-title" *ngIf="!shop.submittedDocuments">Welcome to Sprink! Complete the steps below to start accepting orders.</p>
+  <p class="page-sub-title" *ngIf="shop.submittedDocuments && shop.isVerified">You can now open your shop!</p>
+  <div class="info-message" *ngIf="shop.submittedDocuments && !shop.isVerified">
+    <b>Thank you for submitting your documents.</b><br>
+    We'll check them and get back toy you in the next 48 hours.
+  </div>
+
+
+
+  <mat-list role="navigation">
+    
+    <a routerLink="/settings/security" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary" *ngIf="!passwordChangeChecked">check_box_outline_blank</mat-icon>
+      <mat-icon matListIcon color="primary" *ngIf="passwordChangeChecked">check_box</mat-icon>
+      <span>&nbsp;Change your password</span>
+    </a>
+    
+    <a routerLink="/settings/personal-details" [queryParams]="{returnUrl: 'shop-setup'}" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary" *ngIf="!personalDetailsChecked">check_box_outline_blank</mat-icon>
+      <mat-icon matListIcon color="primary" *ngIf="personalDetailsChecked">check_box</mat-icon>
+      <span>&nbsp;Your personal details</span>
+    </a>
+
+    <a routerLink="/shop-settings/general/{{shop._id}}" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary" *ngIf="!companySettingsChecked">check_box_outline_blank</mat-icon>
+      <mat-icon matListIcon color="primary" *ngIf="companySettingsChecked">check_box</mat-icon>
+      <span>&nbsp;General Shop Settings</span>
+    </a>
+
+    <a routerLink="/shop-settings/payout/{{shop._id}}" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary" *ngIf="!payoutSettingsChecked">check_box_outline_blank</mat-icon>
+      <mat-icon matListIcon color="primary" *ngIf="payoutSettingsChecked">check_box</mat-icon>
+      <span>&nbsp;Setup your payout settings</span>
+    </a>
+
+    <p *ngIf="!companySettingsChecked">Please complete the above steps before you can continue</p>
+
+    <a routerLink="/shop-settings/products/{{shop._id}}" mat-list-item role="navigation" mat-ripple [disabled]="!companySettingsChecked">
+      <mat-icon matListIcon color="primary" *ngIf="!productSettingsChecked">check_box_outline_blank</mat-icon>
+      <mat-icon matListIcon color="primary" *ngIf="productSettingsChecked">check_box</mat-icon>
+      <span>&nbsp;Setup your products</span>
+    </a>
+    
+    <a routerLink="/shop-settings/times/{{shop._id}}" mat-list-item role="navigation" mat-ripple [disabled]="!companySettingsChecked">
+      <mat-icon matListIcon color="primary" *ngIf="!timesSettingsChecked">check_box_outline_blank</mat-icon>
+      <mat-icon matListIcon color="primary" *ngIf="timesSettingsChecked">check_box</mat-icon>
+      <span>&nbsp;Configure pickup times</span>
+    </a>
+
+    <p *ngIf="companySettingsChecked && !allowSubmitVerificationDocuments">Please complete the above steps before you can continue</p>
+
+    <a routerLink="/shop-verification-documents" mat-list-item role="navigation" mat-ripple *ngIf="!shop.submittedDocuments" [disabled]="!allowSubmitVerificationDocuments">
+      <mat-icon matListIcon color="primary">check_box_outline_blank</mat-icon>
+      <span>&nbsp;Send verification documents</span>
+    </a>
+
+    <a routerLink="/shop-verification-documents" mat-list-item role="navigation" *ngIf="shop.submittedDocuments && !shop.isVerified">
+      <mat-icon matListIcon color="primary">hourglass_empty</mat-icon>
+      <span>&nbsp;We're checking your documents</span>
+    </a>
+
+    <a mat-list-item role="navigation" *ngIf="shop.submittedDocuments && shop.isVerified">
+      <mat-icon matListIcon color="primary">check_box</mat-icon>
+      <span>&nbsp;Send verification documents</span>
+    </a>
+
+    <a routerLink="/shop-opening" [disabled]="!shop.isVerified" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary">check_box_outline_blank</mat-icon>
+      <span>&nbsp;Open for business</span>
+    </a>
+
+  </mat-list>
+  
+  <br><br>
+  <mat-divider></mat-divider>
+  <br><br>
+
+  <div class="center">
+    <p>Preview what customers will see when they order from your shop.</p>
+    <p *ngIf="!allowSubmitVerificationDocuments" class="bottomless"><b>Please complete your shop setup first</b></p>
+    <a routerLink="/new-order-preview" [queryParams]="{shopId: shop._id}" mat-stroked-button *ngIf="allowSubmitVerificationDocuments">VIEW PREVIEW</a>
+  </div>
+
+  <br><br>
+  <mat-divider></mat-divider>
+  <br><br>
+
+  <div class="center">
+    <h2>Have any questions?</h2>
+    <a routerLink="/shop-faqs" mat-flat-button color="primary">VIEW FAQS</a>
+    <span class="or"> or </span>
+    <button (click)="chat.maximize()" mat-stroked-button color="primary">START CHAT</button>
+  </div>
+
+</div>

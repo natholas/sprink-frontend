@@ -1,0 +1,117 @@
+<div class="page">
+  <a routerLink="/shop-settings/{{shop._id}}" mat-button class="back-button"><mat-icon>arrow_back_ios</mat-icon> BACK</a>
+  <h2 class="page-title">Products and pricing</h2>
+  <p class="page-sub-title">{{shop.name}}</p>
+
+  <mat-card>
+    <div class="formrow">
+      <mat-form-field class="bottomless">
+        <mat-label>Min. order value</mat-label>
+        <span matPrefix>{{shop.currency}}&nbsp;</span>
+        <input matInput type="number" name="minOrderValue" appNumberLimit [maxVal]="20" [minVal]="5" [(ngModel)]="minOrderValue" id="minOrderValue" required>
+      </mat-form-field>
+    </div>
+    <div class="input-explanation">
+      Customers can only place orders that are at least {{minOrderValue | currency : shop.currency}}.
+    </div>
+    
+    <div class="formrow">
+      <mat-form-field class="bottomless">
+        <mat-label>Delivery fee (added to every order)</mat-label>
+        <span matPrefix>{{shop.currency}}&nbsp;</span>
+        <input matInput type="number" name="deliveryFee" [(ngModel)]="deliveryFee" appNumberLimit [maxVal]="10" [minVal]="0" id="deliveryFee" required>
+      </mat-form-field>
+    </div>
+    <div class="input-explanation bottomless">
+      This fee will be added to every order. We recommend that you dont set this to more than {{3 | currency : shop.currency}}
+    </div>
+  </mat-card>
+  <br>
+  <h2 class="center">Products and services</h2>
+
+  <div class="example-container-container" cdkDropList [cdkDropListData]="productGroups" (cdkDropListDropped)="drop($event)">
+    <div class="example-container" *ngFor="let group of productGroups" cdkDrag cdkDragLockAxis="y">
+      <div class="group-header">
+        <mat-icon cdkDragHandle class="drag-icon">unfold_more</mat-icon>
+        <h2>{{group.name}} <span class="link edit-group" (click)="editGroup(group)">(edit)</span></h2>
+        <div class="spacer"></div>
+        <button mat-icon-button (click)="addProductToGroup(group)">
+          <mat-icon color="primary">add</mat-icon>
+        </button>
+      </div>
+      <div cdkDropList [cdkDropListData]="group.products" class="example-list" id="{{group.name}}products" [cdkDropListConnectedTo]="getGroupIds('products')" (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let product of group.products" cdkDrag cdkDragLockAxis="y">
+          <div class="example-box-content" *ngIf="product.icon">
+            <div class="icon-container"><img [src]="'/assets/product-icons/' + product.icon + '.svg'" class="icon" alt=""></div>
+            <div class="product-name"><b>{{product.name}}</b><span *ngIf="product.price"> ({{product.price | currency : shop.currency}})</span><span *ngIf="!product.price"> (FREE)</span></div>
+            <div class="spacer"></div>
+            <button mat-icon-button (click)="editProduct(product)">
+              <mat-icon color="smoke">edit</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="center" *ngIf="!group.products.length">
+          <button mat-stroked-button color="warn" (click)="deleteGroup(group)" class="delete-button" *ngIf="state.user.userType === 'superadmin'">
+            DELETE GROUP
+          </button>
+          <button mat-flat-button color="primary" (click)="addProductToGroup(group)" class="add-product-button">
+            ADD PRODUCT
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="center" *ngIf="state.user.userType === 'superadmin'">
+      <br>
+      <button mat-stroked-button (click)="addGroup()">SUPERADMIN ADD A PRODUCT GROUP</button>
+    </div>
+  </div>
+
+  <br><br>
+
+  <button mat-flat-button color="accent" class="save-button" (click)="save()" [disabled]="loading">SAVE</button>
+
+</div>
+
+<br><br>
+<mat-divider></mat-divider>
+<br><br>
+
+<div class="page center">
+  <h2>Product pricing info</h2>
+  <p>We mark up your prices by 30%. We do this so that we can offer customers a discount on their order. <b>These discounts help us to get you more orders.</b></p>
+  <p>This means that you'll make anywhere from -9% to +30% on your orders (-9% when we offer a 30% discount. For example we may offer a 30% discount to a customers first order but then only 15% for the next).</p>
+  <br>
+  <p>If you want to offer your customers your normal pricing you can tell them to sign up using this link:</p>
+  <div class="link-box">
+    sprinkclean.com/code/local
+  </div>
+</div>
+
+<br><br>
+<mat-divider></mat-divider>
+<br><br>
+
+<div class="center">
+  <h2>Have any questions?</h2>
+  <a routerLink="/shop-faqs" mat-flat-button color="primary">VIEW FAQS</a>
+  <span class="or"> or </span>
+  <button (click)="chat.maximize()" mat-stroked-button color="primary">START CHAT</button>
+</div>
+
+<br><br>
+
+<!-- <br><br>
+<mat-divider></mat-divider>
+<br><br>
+
+<div class="page center">
+  <h2>Export and Import</h2>
+  <p>As an alternative to adding all of your products manually, you can export and import your products in CSV format.
+    You can open this file with Microsoft Excel or google docs.</p>
+  <p>When you export your current products you will be able to see what headers are required.</p>
+
+  <button (click)="exportProducts()" mat-stroked-button class="export">DOWNLOAD (CSV)</button>
+  <button (click)="importProductInit()" mat-flat-button color="accent">UPLOAD (CSV)</button>
+</div> -->
+
+<input type="file" #uploadel name="image" (change)="processCsv()" style="display: none;" id="csv-upload" accept=".csv">

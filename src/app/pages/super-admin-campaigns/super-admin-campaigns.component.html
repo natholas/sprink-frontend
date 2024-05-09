@@ -1,0 +1,63 @@
+<div class="section">
+  <div class="page">
+    <h1>Send a campaign</h1>
+
+    <h2 style="color: red">This is only for campaigns to non customers!! PLEASE BE CAREFUL!!</h2>
+
+    <div class="formrow">
+      <mat-form-field>
+        <mat-label>Campaign tag (internal)</mat-label>
+        <input matInput type="text" name="campaigntag" [(ngModel)]="campaignTag" (change)="saveData()" required>
+      </mat-form-field>
+    </div>
+
+    <div class="formrow">
+      <mat-form-field>
+        <mat-label>Email subject</mat-label>
+        <input matInput type="text" name="subject" [(ngModel)]="subject" (change)="saveData()" required>
+      </mat-form-field>
+    </div>
+    
+    <div class="formrow">
+      <mat-form-field>
+        <mat-label>Template</mat-label>
+        <select matNativeControl name="template" [(ngModel)]="data.template" required>
+          <option *ngFor="let _template of templates" [value]="_template">{{_template}}</option>
+        </select>
+      </mat-form-field>
+    </div>
+
+    <div class="formrow">
+      <mat-radio-group aria-label="Select an option" [(ngModel)]="campaignType">
+        <mat-radio-button value="individual">Individual</mat-radio-button>
+        <mat-radio-button value="list">List</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <br>
+
+    <div class="formrow" *ngIf="campaignType === 'list'">
+      <mat-form-field>
+        <mat-label>List</mat-label>
+        <select matNativeControl name="list" [(ngModel)]="data.list" required>
+          <option *ngFor="let _list of lists" [ngValue]="_list">{{_list.title}}</option>
+        </select>
+      </mat-form-field>
+    </div>
+
+    <p *ngIf="campaignType === 'list'">To add users to a mailing list visit <a href="https://docs.google.com/spreadsheets/d/1QjtMvyc9l9KWqmLLRUdCXVLeuPL-TcZzY78n_rSYBrI/edit#gid=0" target="_blank" class="link">This google sheet</a></p>
+
+    <div class="formrow" *ngIf="campaignType === 'individual'">
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput type="email" name="email" [(ngModel)]="email" required>
+      </mat-form-field>
+    </div>
+
+    
+    <p *ngIf="data.list">
+      {{data.list.rowCount}} email addresses.
+    </p>
+
+    <button mat-flat-button color="accent" (click)="sendCampaign()" [disabled]="sending">SEND CAMPAIGN</button>
+  </div>
+</div>

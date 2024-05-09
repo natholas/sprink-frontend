@@ -1,0 +1,8 @@
+<div class="formrow">
+  <mat-form-field>
+    <mat-label>Order comment</mat-label>
+    <textarea matInput name="orderComment" [(ngModel)]="data.comment"></textarea>
+  </mat-form-field>
+</div>
+
+<button mat-flat-button color="accent" (click)="dialogRef.close(true)">SAVE</button>

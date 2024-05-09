@@ -1,0 +1,12 @@
+.spacer {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+
+  button {
+    flex: 0 0 auto;
+  }
+}

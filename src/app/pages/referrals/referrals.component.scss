@@ -1,0 +1,139 @@
+.referral-link {
+  text-align: center;
+  cursor: pointer;
+  background: white;
+  box-shadow: none;
+  border: 1px solid rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border-radius: 4px;
+  background-color: var(--primary-color);
+  color: white;
+
+  > .icon-container {
+    flex: 0 0 auto;
+    display: block;
+    background-color: var(--primary-darker-color);
+    padding: 12px;
+
+    mat-icon {
+      display: block;
+    }
+  }
+
+  b {
+    width: 100%;
+    flex: 1 1 auto;
+    display: block;
+    padding: 0 12px;
+  }
+
+  &:hover {
+    border-color: var(--primary-color);
+  }
+  &:active {
+    background-color: var(--primary-darker-color);
+  }
+}
+
+.referral-input {
+  opacity: 0;
+  position: fixed;
+  top: -1000px;
+}
+
+.referrals {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: -6px;
+
+  .referal {
+    width: calc(33.3333% - 12px);
+    flex: 0 0 auto;
+    margin: 6px;
+
+    @media screen and (max-width: 700px) {
+      width: calc(50% - 12px);
+    }
+
+    &.done {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .referral-icon {
+      width: 85%;
+      margin: 0 auto;
+
+      img {
+        width: 100%;
+        display: block;
+      }
+    }
+
+    .referral-status {
+      margin-top: 6px;
+      margin-bottom: 12px;
+
+      span {
+        font-size: 12px;
+        font-weight: bold;
+        color: rgba(0,0,0,0.54);
+        line-height: 1em;
+        display: block;
+      }
+    }
+
+    .referral-data {
+      padding-top: 12px;
+
+      .referral-bar {
+        display: flex;
+
+        > div {
+          margin: 0 1px;
+          background-color: var(--primary-lighter-color);
+          padding: 4px;
+          width: 100%;
+          border-radius: 2px;
+        }
+        .bar-accepted {
+          margin-left: 0;
+        }
+        
+        &.accepted {
+          .bar-accepted {
+            background-color: var(--primary-color);
+          }
+        }
+
+        &.order-created {
+          .bar-accepted,
+          .bar-order-created {
+            background-color: var(--primary-color);
+          }
+        }
+
+        &.order-completed {
+          .bar-accepted,
+          .bar-order-created,
+          .bar-order-completed {
+            background-color: var(--primary-color);
+          }
+        }
+      }
+    }
+  }
+}
+
+.progress-title {
+  margin-bottom: 6px;
+}
+
+.done-text {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 16px;
+}

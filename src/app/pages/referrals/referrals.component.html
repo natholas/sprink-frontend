@@ -1,0 +1,63 @@
+<div class="page">
+  <a routerLink="/settings" mat-button class="back-button"><mat-icon>arrow_back_ios</mat-icon> BACK</a>
+  <div class="center">
+
+    <h2 class="page-title">Invite friends</h2>
+    <br>
+    <mat-card>
+      <h3>Invite three friends to Sprink and get £5 in Sprink credit.</h3>
+      
+      <p>Just share this link with your friends. Once they sign up you will be able to track their progress here.</p>
+      
+      <div class="referral-link" (click)="tryShareLink()">
+        <div class="icon-container">
+          <mat-icon color="white">share</mat-icon>
+        </div>
+        <b>{{referralLinkNoProtocol}}</b>
+      </div>
+      <br>
+      <p class="bottomless">Note: Your friends need to complete their first order to count.</p>
+      
+      <div class="referral-input">
+        <input matInput type="text" name="address" #referralInput [(ngModel)]="referralLink">
+      </div>
+    </mat-card>
+    
+    <div *ngIf="!state.user.allowAdvertising || !userService.hasNotificationPermission()">
+      <br>
+      <mat-card>
+        <app-request-notification-box>
+          Get notified on the progress of your referrals.
+        </app-request-notification-box>
+      </mat-card>
+    </div>
+
+    <br>
+
+    <div *ngIf="referrals.length">
+      <h2 class="progress-title">Progress towards £5 Sprink credit</h2>
+      <p class="">{{doneReferrals}} out of 3 completed</p>
+      <div class="referrals">
+        <mat-card *ngFor="let referral of referrals; let i = index" class="referal" [ngClass]="{done: referral.status === 'order-completed'}">
+          <div class="referral-icon">
+            <img [src]="'/assets/reference-icons/icon-' + (i + 1) + '.svg'" alt="">
+          </div>
+          <div class="referral-data" *ngIf="referral.status !== 'order-completed'">
+            <div class="referral-status">
+              <span>status:</span>
+              <b>{{getStatusText(referral.status)}}</b>
+            </div>
+            <div class="referral-bar" [ngClass]="referral.status">
+              <div class="bar-accepted"></div>
+              <div class="bar-order-created"></div>
+              <div class="bar-order-completed"></div>
+            </div>
+          </div>
+          <div class="referral-data" *ngIf="referral.status === 'order-completed'">
+            <div class="done-text">DONE!</div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

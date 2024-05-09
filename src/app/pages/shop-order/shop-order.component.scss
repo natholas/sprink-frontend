@@ -1,0 +1,43 @@
+.no-message {
+  opacity: 0.54;
+}
+
+mat-list-item {
+  b {
+    font-weight: 600!important;
+  }
+}
+
+mat-accordion {
+  margin: 16px 0;
+  display: block;
+
+  mat-list {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+}
+
+.second-button {
+  margin-left: 16px;
+}
+
+mat-card-actions {
+  margin-left: 8px!important;
+  margin-bottom: 8px!important;
+}
+
+.crossed-out {
+  position: relative;
+  margin-right: 8px;
+
+  &:after {
+    content: "";
+    position: absolute;
+    border-top: 1px solid var(--warn-color);
+    top: calc(50% - 0.5px);
+    left: -2px;
+    width: calc(100% + 4px);
+    transform: rotate(10deg);
+  }
+}

@@ -1,0 +1,16 @@
+<h2>Issue a refund</h2>
+<p>Please be careful. Any refund that you submit is final and cannot be undone.</p>
+
+<div class="formrow">
+  <mat-form-field appearance="fill">
+    <mat-label>Refund amount</mat-label>
+    <span matPrefix>{{order.currency}}&nbsp;</span>
+    <input matInput type="number" name="minOrderValue" appNumberLimit [minVal]="1" [maxVal]="order.totalAmount" [(ngModel)]="refundAmount" id="minOrderValue" required>
+    <mat-hint>Max: {{(maxAmount / 100) | currency : order.currency}}</mat-hint>
+  </mat-form-field>
+</div>
+<div class="center">
+  <button mat-flat-button color="accent" [disabled]="loading" (click)="confirmRefund()">CONFIRM REFUND</button>
+  <br>
+  <br>
+</div>

@@ -1,0 +1,109 @@
+mat-card {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.card-image {
+  padding-bottom: 60%;
+  background-color: #ddd;
+  background-size: cover;
+  background-position: center;
+}
+
+.card-devider {
+  margin: 16px -16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.pickup-shop-title {
+  font-size: 24px;
+}
+
+.pickup-shop-title-pre {
+  margin-bottom: 4px;
+}
+
+.stars {
+  height: 16px;
+  margin-top: -12px;
+  margin-bottom: 16px;
+
+  .mat-icon {
+    font-size: 16px !important;
+    width: 16px;
+    height: 16px;
+    margin-right: 2px;
+  }
+
+  .mat-icon.gray {
+    color: #ddd;
+  }
+}
+
+.order-number {
+  font-size: 11px;
+  opacity: 0.54;
+  margin-bottom: 16px;
+  line-height: 11px;
+}
+
+mat-card-subtitle {
+  margin-bottom: 2px;
+}
+
+mat-card {
+  margin-bottom: 16px;
+}
+
+mat-expansion-panel {
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 -16px;
+}
+
+.pickup-meta-info {
+  margin-top: 16px;
+  opacity: 0.54;
+}
+
+.order-icons {
+  display: flex;
+  margin-top: 8px;
+
+  > * {
+    display: block;
+    flex: 0 1 auto;
+    width: calc(100% / 8);
+    padding: 8px;
+
+    img {
+      display: block;
+      width: 100%;
+    }
+  }
+}
+
+.more-icon {
+  text-align: center;
+  line-height: 1.5;
+  font-size: 18px;
+  opacity: 0.54;
+  white-space: nowrap;
+}
+
+.order {
+  &.cancelled {
+    filter: grayscale(1);
+
+    .mat-card-title {
+      opacity: 0.5;
+    }
+  }
+}
+
+.icon-container {
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  margin-right: 12px;
+  padding: 2px;
+}

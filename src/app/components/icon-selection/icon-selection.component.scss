@@ -1,0 +1,18 @@
+.icons {
+  display: flex;
+  flex-wrap: wrap;
+  
+  .icon {
+    width: 12.5%;
+    padding-bottom: 12.5%;
+    flex: 0 0 auto;
+    background-repeat: no-repeat;
+    background-size: 80%;
+    background-position: center;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(0,0,0,0.05);
+    }
+  }
+}

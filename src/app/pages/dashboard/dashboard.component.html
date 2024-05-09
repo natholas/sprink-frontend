@@ -1,0 +1,12 @@
+<div class="page">
+  <app-customer-order *ngFor="let order of orders" [order]="order" (onUpdate)="onUpdate()"></app-customer-order>
+  <!-- <div class="center">
+    <a class="facebook-share-button" target="_blank" mat-flat-button color="facebook"
+      href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fsprinkclean.com%2F&amp;src=sdkpreparse">
+      <img src="/assets/facebook-alt-white.svg" alt=""> SHARE
+    </a>
+  </div> -->
+</div>
+<mat-toolbar>
+  <a routerLink="/new-order" mat-flat-button color="primary">ADD ANOTHER PICKUP</a>
+</mat-toolbar>

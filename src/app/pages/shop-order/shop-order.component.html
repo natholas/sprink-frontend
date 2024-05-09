@@ -1,0 +1,213 @@
+<div class="page">
+
+  <a routerLink="/shop-admin" mat-button class="back-button"><mat-icon>arrow_back_ios</mat-icon> BACK</a>
+
+  <div *ngIf="order.status === 'ready'">
+    <mat-card>
+      <mat-card-content>
+        <h2 *ngIf="order.overDue">This order is overdue for pickup.</h2>
+        <h2 *ngIf="order.dueToday">This order needs to be picked up today.</h2>
+        <h2 *ngIf="!order.dueToday && !order.overDue">This order will be ready for pickup on {{order.pickupTime | date : 'dd/MM/yyyy'}}.</h2>
+        <div *ngIf="order.dueToday || order.overDue">
+          <p>When you are ready to pick up this order, click the button below to get directions and to confirm that you have picked up the order.</p>
+          <a routerLink="/pickup-order/{{order._id}}" mat-flat-button color="accent">GO TO PICKUP</a>
+        </div>
+        <div *ngIf="!order.dueToday && !order.overDue">
+          Come back to this page on on that day to get directions and to confirm the pickup.
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <br>
+    <a *ngIf="!production" routerLink="/pickup-order/{{order._id}}" mat-button>To pickup (test only)</a>
+  </div>
+
+  <div *ngIf="order.status === 'pickedup'">
+    <mat-card>
+      <mat-card-content>
+        <h2 *ngIf="order.overDue">This order is overdue for delivery.</h2>
+        <h2 *ngIf="order.dueToday">This order need to be delivered today.</h2>
+        <h2 *ngIf="!order.dueToday && !order.overDue">This order should be ready for delivery on {{order.deliveryTime | date : 'dd/MM/yyyy'}}.</h2>
+        <div *ngIf="order.dueToday || order.overDue">
+          <p>When you are ready to deliver this order, click the button below to get directions and to confirm that you have delivered the order.</p>
+          <a routerLink="/deliver-order/{{order._id}}" mat-flat-button color="accent">GO TO DELIVERY</a>
+        </div>
+        <div *ngIf="!order.dueToday && !order.overDue">
+          Come back to this page on on that day to get directions and to confirm the delivery.
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <br>
+    <a *ngIf="!production" routerLink="/deliver-order/{{order._id}}" mat-button>To delivery (test only)</a>
+  </div>
+
+  <div *ngIf="order.status === 'atshop'">
+    <mat-card>
+      <mat-card-content>
+        <h2>The customer will come to collect this order from your shop.</h2>
+        <div>
+          <p>Once the customer has collected their items, click the button below to complete the order.</p>
+          <a routerLink="/collect-order/{{order._id}}" mat-flat-button color="accent">CONFIRM</a>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <br>
+  </div>
+
+  <mat-card>
+    <!-- <div class="card-drop-down-menu">
+      <button mat-icon-button [matMenuTriggerFor]="menu" class="card-drop-down-menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <a href="tel:{{order.customer.phoneNumber}}" mat-menu-item>
+          <mat-icon>phone</mat-icon>
+          <span>Call customer</span>
+        </a>
+        <button mat-menu-item (click)="openRefundMenu()" [disabled]="order.status === 'cancelled' || order.status === 'ready'">
+          <mat-icon>money_off</mat-icon>
+          <span>Do partial refund</span>
+        </button>
+      </mat-menu>
+    </div> -->
+    <mat-card-content>
+      <div class="formrow break-on-mobile">
+        <div class="list">
+          <div class="list-item">
+            <h4>Customer name:</h4>
+            <b>{{order.customer.firstName}} {{order.customer.lastName}}</b>
+          </div>
+          <div class="list-item">
+            <h4>Order total:</h4>
+            <b *ngIf="!order.totalDiscountAmount">{{order.totalAmount / 100 | currency : order.currency}}</b>
+            <b *ngIf="order.totalDiscountAmount">
+              <span class="crossed-out">{{(order.subTotal + order.deliveryFee) / 100 | currency : order.currency}}</span>
+              <span class="">{{order.totalAmount / 100 | currency : order.currency}}</span>
+            </b>
+          </div>
+          <div class="list-item">
+            <h4>Promotion:</h4>
+            <b *ngIf="order.promotionTitle">{{order.promotionTitle}}</b>
+            <span *ngIf="!order.promotionTitle">none</span>
+          </div>
+        </div>
+        <div class="list">
+          <div class="list-item" *ngIf="order.status === 'ready'">
+            <h4>Scheduled pickup date:</h4>
+            <b>{{order.pickupTime | date : 'short'}} - {{getRunEndTime(order.pickupTime)}}</b>
+          </div>
+          <div class="list-item" *ngIf="order.status === 'pickedup'">
+            <h4>Scheduled delivery date:</h4>
+            <b>{{order.deliveryTime | date : 'short'}} - {{getRunEndTime(order.deliveryTime)}}</b>
+          </div>
+          <div class="list-item">
+            <h4>Customer phone number:</h4>
+            <b><a class="link" href="tel:{{order.customer.phoneNumber}}">{{order.customer.phoneNumber}}</a></b>
+          </div>
+          <div class="list-item">
+            <h4>Contactless delivery:</h4>
+            <b>{{order.allowDropOffAtDoor ? 'Enabled' : 'Disabled'}}</b>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+      <br>
+      
+      <div class="list">
+        <div class="list-item">
+          <h4>Address:</h4>
+          <b>{{order.address.formatted}} <span *ngIf="order.address.extraAddressInfo">({{order.address.extraAddressInfo}})</span></b>
+        </div>
+        <div class="list-item">
+          <h4>Message from customer:</h4>
+          <b>{{order.customMessage}} <span class="no-message" *ngIf="!order.customMessage">[No custom message left by customer]</span></b>
+        </div>
+        <div class="list-item">
+          <h4>Internal comment: (not visible to customer)</h4>
+          <b>{{order.shopComment}} <span class="no-message" *ngIf="!order.shopComment">[No comment]</span></b>
+          <a class="link" (click)="addEditShopComment()"> (edit)</a>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <br>
+      <div class="small-text">
+        <span>Reference:</span><b> {{order.reference}}</b>
+        <br>
+        <span>Order status:</span><b> {{order.status | orderStatus : order}}</b>
+        <div *ngIf="order.status === 'cancelled'">
+          <span>Cancellation reason:</span><b> {{order.cancellationReason}}</b>
+        </div>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+
+  <mat-accordion>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Items</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="list">
+        <div class="list-item" *ngFor="let product of order.products">{{product.count}}x {{product.productName}} <span *ngIf="product.unitType">({{product.unitTypeAmount}} {{product.unitType}})</span></div>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="order.chargeHistory.length">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Charge history</mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="list">
+        <div class="list-item" *ngFor="let charge of order.chargeHistory">
+          <div *ngIf="charge.amount > 0">
+            <b>{{(charge.amount / 100) | currency : order.currency}}</b> - {{charge.time | date : 'short'}} (<span *ngIf="charge.type === 'card'">Charged to card</span><span *ngIf="charge.type === 'sprink credit'">Charged to Sprink credit</span>)
+          </div>
+          <div *ngIf="charge.amount < 0">
+            <b>{{(charge.amount / 100) | currency : order.currency}}</b> - {{charge.time | date : 'short'}} (<span *ngIf="charge.type === 'card'">Refunded to card</span><span *ngIf="charge.type === 'sprink credit'">Refunded to Sprink credit</span>)
+          </div>
+          <!-- <a mat-mat-stroked-button href="https://dashboard.stripe.com/{{production ? '' : 'test/'}}payments/{{payment.paymentIntent}}" target="_blank" class="link">VIEW</a> -->
+        </div>
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Order status history
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+    
+      <div class="list bottomless">
+        <div class="list-item" *ngFor="let entry of order.statusHistory">
+          <span>Status:</span><b> {{entry.status}}</b><br>
+          <span>Date:</span><b> {{entry.time | date : 'short'}}</b><br>
+          <span>By:</span><b> {{entry.updatedBy}}</b>
+        </div>
+      </div>
+    
+    </mat-expansion-panel>
+    
+  </mat-accordion>
+
+  <div *ngIf="order.status === 'ready'">
+    <br>
+    <mat-divider></mat-divider>
+
+    <h3>Order cancellation</h3>
+    <p>Please You can cancel this order before you confirm the pickup. The customer will receive a full refund.</p>
+
+    <div class="formrow">
+      <mat-form-field>
+        <mat-label>Reason</mat-label>
+        <mat-select name="cancellation-reason" [(ngModel)]="cancellationReason">
+          <mat-option *ngFor="let reason of cancellationReasons" [value]="reason">{{reason}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <button mat-stroked-button color="warn" (click)="cancelOrder()">
+      <span>CANCEL ORDER</span>
+    </button>
+  </div>
+
+</div>

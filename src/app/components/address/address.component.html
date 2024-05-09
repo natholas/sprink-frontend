@@ -1,0 +1,34 @@
+<div *ngIf="!editMode" class="address-preview">
+  <span><b>{{place.formatted_address}}</b></span>
+  <button mat-icon-button color="primary" type="button" (click)="editMode = true">
+    <mat-icon>edit</mat-icon>
+  </button>
+</div>
+
+<div *ngIf="editMode">
+  <div class="formrow" *ngIf="!loading && !foundPostCode">
+    <mat-form-field appearance="outline" class="bottomless">
+      <mat-label *ngIf="autofillPostCode">Postcode</mat-label>
+      <mat-label *ngIf="!autofillPostCode">Pos<span style="display: none;">noaw</span>tc<span>ode</span></mat-label>
+      <input matInput type="text" name="{{postcodeAutofill}}" [(ngModel)]="postcode" required="true">
+    </mat-form-field>
+    <button mat-flat-button color="primary" type="button" class="next-to-input" (click)="findAddresses()">FIND</button>
+  </div>
+
+  <div *ngIf="foundPostCode">
+    Postcode: <b>{{postcode}} </b> <span class="link" (click)="editPostCode()">(edit)</span>
+  </div>
+
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  
+  <div class="no-address-found" *ngIf="input && !loading && !predictions.length && !place">Address not found</div>
+  
+  <div class="formrow" *ngIf="predictions.length">
+    <mat-form-field appearance="outline" class="bottomless">
+      <mat-label>Addresses</mat-label>
+      <select matNativeControl required [(ngModel)]="place" (change)="selectAddress(place)" required="true">
+        <option *ngFor="let prediction of predictions" [ngValue]="prediction">{{prediction.line_1}} {{prediction.line_2}} {{prediction.line_3}}</option>
+      </select>
+    </mat-form-field>
+  </div>
+</div>

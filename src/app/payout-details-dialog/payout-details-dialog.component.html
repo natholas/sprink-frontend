@@ -1,0 +1,48 @@
+<div class="total-sales">
+  <p>Total sales</p>
+  <h2>{{(payout.total / 100) | currency : shop.currency}}</h2>
+</div>
+
+<br>
+<mat-divider></mat-divider>
+<br>
+<div class="list">
+  <div class="list-item has-bar-chart">
+    <h3>Credit card fees</h3>
+    <p>The amount that our payment provider (<a href="https://stripe.com/en-gb/pricing" rel="noopener" class="link" target="_blank">Stripe</a>) charged for the transactions the customers did.</p>
+    <div class="bar-chart chart-cc-fees">
+      <div class="bar-chart-inner" [ngStyle]="{width: (100 / payout.total * payout.totalStripeFees) + '%'}"></div>
+      <b>{{(payout.totalStripeFees / 100) | currency : shop.currency}}</b>
+    </div>
+  </div>
+  <div class="list-item has-bar-chart">
+    <h3>VAT</h3>
+    <p>20% of the total minus the credit card fees. Sprink pays the VAT for the whole transaction.</p>
+    <div class="bar-chart chart-vat">
+      <div class="bar-chart-inner" [ngStyle]="{width: (100 / payout.total * payout.totalVat) + '%'}"></div>
+      <b>{{(payout.totalVat / 100) | currency : shop.currency}}</b>
+    </div>
+  </div>
+  <div class="list-item has-bar-chart">
+    <h3>Sprink commission</h3>
+    <p>Our commission is 9.5% of the total amount once the payment fees and vat have been removed.</p>
+    <div class="bar-chart chart-sprink">
+      <div class="bar-chart-inner" [ngStyle]="{width: (100 / payout.total * payout.totalSprinkCut) + '%'}"></div>
+      <b>{{(payout.totalSprinkCut / 100) | currency : shop.currency}}</b>
+    </div>
+  </div>
+  <div class="list-item has-bar-chart bottomless">
+    <h3>Your revenue</h3>
+    <p>The money that is left over. This is what we will pay out to you.<br><br>
+    <b>You dont need to pay VAT on this amount.</b></p>
+    <div class="bar-chart chart-shop">
+      <div class="bar-chart-inner" [ngStyle]="{width: (100 / payout.total * payout.totalShopRevenue) + '%'}"></div>
+      <b>{{(payout.totalShopRevenue / 100) | currency : shop.currency}}</b>
+    </div>
+  </div>
+</div>
+
+<div class="center">
+  <br>
+  If you have any questions, please feel free to <span class="link" (click)="chat.maximize()">chat with us</span>.
+</div>

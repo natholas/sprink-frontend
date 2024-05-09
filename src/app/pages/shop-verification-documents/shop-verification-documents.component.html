@@ -1,0 +1,80 @@
+<div class="section primary bubbles-container">
+  <app-bubbles></app-bubbles>
+  <div class="page center">
+    <h1>Verification</h1>
+  </div>
+</div>
+
+<div class="section">
+  <div class="page">
+
+    <a routerLink="/shop-setup" mat-button class="back-button">
+      <mat-icon>arrow_back_ios</mat-icon> BACK
+    </a>
+
+    <div *ngIf="shop.submittedDocuments" class="already-submitted-warning">
+      Note: You have already submitted these documents. Please only submit them again if there was a mistake with the documents that you submitted.
+    </div>
+
+    <div *ngIf="!verificationRequests.length" class="already-submitted-warning">
+      Note: Once you submit these documents you will not be able to change your shops address anymore.
+    </div>
+
+    <div *ngIf="latestVerificationRequest && latestVerificationRequest.status === 'rejected'" class="already-submitted-warning">
+      Your last verification request was rejected. Here is the reason:<br>
+      {{latestVerificationRequest.rejectionReason}}
+    </div>
+
+    <h2>Required documents:</h2>
+
+    <p>To verify that you are the owner of <b>{{shop.name}}</b> we need you to upload some documents. We won't share these documents with anyone.</p>
+
+    <mat-list>
+      <mat-list-item mat-ripple (click)="triggerInput('picture-id')">
+        <mat-icon *ngIf="!uploads['picture-id']" mat-list-icon color="primary">cloud_upload</mat-icon>
+        <mat-icon *ngIf="uploads['picture-id']" mat-list-icon color="primary">check_circle_outline</mat-icon>
+        <div mat-line>Picture ID</div>
+        <div mat-line>Driver lisence, passport, etc.</div>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item mat-ripple (click)="triggerInput('proof-of-ownership')">
+        <mat-icon *ngIf="!uploads['proof-of-ownership']" mat-list-icon color="primary">cloud_upload</mat-icon>
+        <mat-icon *ngIf="uploads['proof-of-ownership']" mat-list-icon color="primary">check_circle_outline</mat-icon>
+        <div mat-line>Proof of ownership</div>
+        <div mat-line>Utility bill, lease agreement, etc.</div>
+      </mat-list-item>
+    </mat-list>
+
+    <div class="center">
+      <br>
+      <span *ngIf="!uploads['picture-id'] || (!uploads['proof-of-ownership'])" class="upload-both-warning">Please upload both documents before submitting.</span>
+    </div>
+    <br>
+    <div class="formrow">
+      <mat-checkbox name="iUndertand1" [(ngModel)]="iUnderstand1">I understand the way that the payouts are done.</mat-checkbox>
+    </div>
+    <div class="formrow">
+      <mat-checkbox name="iUndertand2" [(ngModel)]="iUnderstand2">I understand that when I start receiving orders I will need to pick up and deliver them.</mat-checkbox>
+    </div>
+    <br><br>
+    
+    <div class="center">
+      <button (click)="submit()" mat-flat-button *ngIf="!submitting" color="primary" [disabled]="!uploads['picture-id'] || (!uploads['proof-of-ownership']) || !iUnderstand1 || !iUnderstand2" class="big-button">SUBMIT</button>
+      <mat-progress-bar mode="indeterminate" *ngIf="submitting"></mat-progress-bar>
+    </div>
+
+    <br><br>
+    <mat-divider></mat-divider>
+    <br><br>
+    
+    <div class="center">
+      <h2>Have any questions?</h2>
+      <a routerLink="/shop-faqs" mat-flat-button color="primary">VIEW FAQS</a>
+      <span class="or"> or </span>
+      <button (click)="chat.maximize()" mat-stroked-button color="primary">START CHAT</button>
+    </div>
+
+  </div>
+</div>
+
+<input type="file" #imageel name="image" (change)="processImage()" id="image-upload" accept="image/*,application/pdf" capture>

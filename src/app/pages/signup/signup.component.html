@@ -1,0 +1,35 @@
+<div class="section full-height smoke center-content bubbles-container">
+  <!-- <app-bubbles></app-bubbles> -->
+  <div class="page has-centered-content">
+    <div class="page-centered-content center small">
+      <h1 class="page-title">Register</h1>
+      <mat-card>
+        <mat-card-content>
+          <form name="signupForm" #signupForm="ngForm" (submit)="submitForm(signupForm)">
+            <mat-form-field>
+              <input matInput type="email" minlength="5" maxlength="50" name="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}" [(ngModel)]="email" id="email" placeholder="Email" required><br>
+            </mat-form-field>
+            <mat-form-field class="bottomless">
+              <input matInput type="password" name="password" [(ngModel)]="password" id="password" placeholder="Password" required><br>
+            </mat-form-field>
+            <mat-progress-bar [color]="getPasswordIndicatorColor()" mode="determinate" [value]="getPasswordStrength()"></mat-progress-bar>
+            <br>
+            <mat-form-field>
+              <input matInput type="password" name="password" [(ngModel)]="repeatPassword" id="repeat-password" placeholder="Repeat password" required><br>
+            </mat-form-field>
+            <br>
+            <button mat-flat-button *ngIf="!loading" color="primary" class="signup-button">CONFIRM</button>
+            <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+          </form>
+        </mat-card-content>
+      </mat-card>
+      <div class="legal">
+        By signing up you agree with our <a routerLink="/terms" class="link">terms of service</a>.
+      </div>
+      <div class="continue-link">
+        <br>
+        <a routerLink="/continue" class="link">Already have an account?</a>
+      </div>
+    </div>
+  </div>
+</div>

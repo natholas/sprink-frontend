@@ -1,0 +1,23 @@
+<div class="section" *ngIf="!success">
+  <div class="page center">
+
+    <img src="/assets/launch1.png" class="main-img" alt="">
+    <img src="/assets/launch2.png" style="display: none;" class="main-img success" alt="">
+    
+    <h1>Ready for launch?</h1>
+    <p>You are about to open your shop to the public and will start receiving Sprink orders.</p>
+
+    <button mat-flat-button color="primary" [disabled]="loading" (click)="openShop()">LAUNCH</button>
+  </div>
+</div>
+<div class="section" *ngIf="success">
+  <div class="page center">
+
+    <img src="/assets/launch2.png" class="main-img success" alt="">
+
+    <h1>Liftoff!</h1>
+    <p>Your shop is now live.</p>
+
+    <a mat-flat-button color="primary" routerLink="/shop-admin" [disabled]="loading">TO SHOP ADMIN PANEL</a>
+  </div>
+</div>

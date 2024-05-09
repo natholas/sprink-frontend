@@ -1,0 +1,19 @@
+<div class="center">
+  <mat-form-field *ngIf="allowChange">
+    <mat-label>Dry cleaner</mat-label>
+    <select matNativeControl name="selectedShop" [(ngModel)]="selectedShop">
+      <option *ngFor="let _shop of availableShops" [ngValue]="_shop">{{_shop.name}}</option>
+    </select>
+  </mat-form-field>
+  <h3 *ngIf="!allowChange">{{selectedShop.name}}</h3>
+  <p>{{selectedShop.address.formatted}}</p>
+  <a href="tel:{{selectedShop.phoneNumber}}" class="link call-link">
+    <mat-icon>phone</mat-icon>
+    <span>{{selectedShop.phoneNumber}}</span>
+  </a>
+  <div *ngIf="allowChange && selectedShop._id !== shop._id">
+    <br>
+    <p><b>Note:</b> Changing dry cleaner will reset any items you have added to your basket.</p>
+    <button mat-flat-button color="accent" (click)="changeDryCleaners()">CONFIRM</button>
+  </div>
+  </div>

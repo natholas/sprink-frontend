@@ -1,0 +1,35 @@
+<div class="page">
+  <h2 class="page-title">Settings</h2>
+
+
+  <mat-list role="navigation">
+    <!-- <a routerLink="/settings/general" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary">settings</mat-icon>
+      <span>&nbsp;General Settings</span>
+    </a> -->
+    <a routerLink="/settings/personal-details" *ngIf="state.user.userType !== 'staff'" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary">person</mat-icon>
+      <span>&nbsp;Personal Details</span>
+    </a>
+    <a routerLink="/settings/security" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary">lock</mat-icon>
+      <span>&nbsp;Account security</span>
+    </a>
+    <a routerLink="/settings/payment-methods" *ngIf="state.user.userType !== 'staff'" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary">credit_card</mat-icon>
+      <span>&nbsp;Saved Cards</span>
+    </a>
+    <a routerLink="/settings/gdpr" *ngIf="state.user.userType !== 'staff'" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary">vpn_lock</mat-icon>
+      <span>&nbsp;Privacy</span>
+    </a>
+    <a routerLink="/settings/sprink-credit" *ngIf="state.user.userType !== 'staff'" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary">account_balance_wallet</mat-icon>
+      <span>&nbsp;Sprink credit</span>
+    </a>
+    <a routerLink="/settings/referrals" *ngIf="state.user.userType !== 'staff'" mat-list-item role="navigation" mat-ripple>
+      <mat-icon matListIcon color="primary">sentiment_satisfied_alt</mat-icon>
+      <span>&nbsp;Invite friends</span>
+    </a>
+  </mat-list>
+</div>

@@ -1,0 +1,37 @@
+<div class="page">
+  <h2>Payout for {{shop.name}}</h2>
+
+  <div class="list">
+    <div class="list-item">
+      <h4>Payee name</h4>
+      <b>{{payoutSettings.payeeName}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Sort code</h4>
+      <b>{{payoutSettings.sortCode}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Account number</h4>
+      <b>{{payoutSettings.accountNumber}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Is company account?</h4>
+      <b>{{payoutSettings.isPersonalAccount ? 'No' : 'Yes'}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Amount</h4>
+      <b>{{payout.amount / 100 | currency : payout.currency}}</b>
+    </div>
+    <div class="list-item">
+      <h4>Reference</h4>
+      <b>{{payout.reference}}</b>
+    </div>
+  </div>
+
+  <p>When you click the button below you are confirming that you have made a payment using the exact details from above.</p>
+
+  <button mat-flat-button color="accent" (click)="confirmPaid()">CONFIRM PAID</button>
+
+  <br><br>
+  <button mat-stroked-button color="warn" (click)="cantDoPayment()">CANT DO PAYMENT</button>
+</div>

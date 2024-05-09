@@ -1,0 +1,18 @@
+<div class="page">
+  <h2 class="page-title">Your orders</h2>
+
+  <div class="formrow">
+    <mat-form-field>
+      <mat-select [(ngModel)]="orderType" (valueChange)="changeType($event)">
+        <mat-option value="past">Past</mat-option>
+        <mat-option value="upcoming">Upcoming</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <app-customer-order routerLink="/order-details/{{order._id}}" *ngFor="let order of ordersToDisplay" [order]="order" [simpleMode]="true" (onUpdate)="onUpdate()"></app-customer-order>
+  <div class="center" *ngIf="!ordersToDisplay.length">
+    <br>
+    No orders to display.
+  </div>
+</div>

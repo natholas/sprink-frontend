@@ -1,0 +1,53 @@
+<div class="center">
+  <h2 class="headless bottomless">{{product.name}}</h2>
+  <p *ngIf="product.unitType === 'kg'">Select the total weight.</p>
+  <p *ngIf="product.unitType === 'item'">Select the number of items.</p>
+  <p *ngIf="product.unitType === 'm²'">Select the size.</p>
+</div>
+
+<form name="amountForm" #amountForm="ngForm" (submit)="onConfirm(amountForm)">
+
+  <div class="formrow" *ngIf="product.unitType !== 'm²'">
+    <mat-form-field appearance="outline">
+      <mat-label>Amount</mat-label>
+      <input matInput type="number" appNumberLimit [maxVal]="500" [minVal]="1" [blockDecimals]="true" name="amount" [(ngModel)]="amount" id="amount" required>
+      <span matSuffix *ngIf="product.unitType === 'item'">items</span>
+      <span matSuffix *ngIf="product.unitType === 'kg'">kg</span>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="product.unitType === 'm²'">
+    <div class="formrow">
+      <mat-form-field appearance="outline">
+        <mat-label>Width</mat-label>
+        <input matInput type="number" appNumberLimit [maxVal]="22" (input)="calcAmount()" name="width" [(ngModel)]="width" id="width" required>
+        <span matSuffix>Meters</span>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Height</mat-label>
+        <input matInput type="number" appNumberLimit [maxVal]="22" (input)="calcAmount()" name="height" [(ngModel)]="height" id="height" required>
+        <span matSuffix>Meters</span>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="cost center">
+    <b>
+      <span *ngIf="!percentageDiscount">{{product.price / 100 | currency : 'GBP'}}</span>
+      <span *ngIf="percentageDiscount"><span class="crossed-out">{{product.price / 100 | currency : 'GBP'}}</span><span> {{(product.price - (product.price * percentageDiscount / 100)) / 100 | currency : 'GBP'}}</span></span>
+    </b> per {{product.unitType}}
+    <h2>Total: 
+      <span *ngIf="percentageDiscount">
+        <span class="crossed-out">{{(getAmount() * product.price / 100) | currency : 'GBP'}}</span>
+        <span> {{((getAmount() * product.price) - (getAmount() * product.price * percentageDiscount / 100)) / 100 | currency : 'GBP'}}</span>
+      </span>
+      <span *ngIf="!percentageDiscount">{{((getAmount() * product.price / 100)) | currency : 'GBP'}}</span>
+      
+      <span *ngIf="product.unitType === 'm²'"> ({{getAmount()}} {{product.unitType}})</span></h2>
+  </div>
+  <button mat-flat-button color="accent" [disabled]="!amount">ADD</button>
+  <div class="center" *ngIf="amount !== getAmount()">
+    <br>
+    <span>Note: Amount is rounded up <span *ngIf="product.unitType === 'm²'">from {{amount}}</span></span>
+  </div>
+</form>

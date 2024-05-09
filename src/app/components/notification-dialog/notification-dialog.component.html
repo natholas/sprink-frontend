@@ -1,0 +1,18 @@
+<div class="center">
+  <h1 class="headless">Sprink would like to send you updates</h1>
+  
+  <p>Our app is made with notifications in mind. We'd like to send you notifications
+  
+  <span *ngIf="state.user.userType === 'user'">
+    for the status of your orders and to keep you informed of our best offers.
+  </span>
+  
+  <span *ngIf="state.user.userType !== 'user'">
+    for customer orders, your shop settings and to keep you informed of our best offers.
+  </span>
+
+  </p>
+  
+  <button mat-flat-button color="primary" (click)="accept()">KEEP ME POSTED</button>
+  <button mat-button (click)="close()">NO THANKS</button>
+</div>

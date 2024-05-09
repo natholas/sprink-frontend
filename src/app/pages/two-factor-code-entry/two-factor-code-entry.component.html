@@ -1,0 +1,22 @@
+<div class="section full-height smoke center-content">
+  <div class="page has-centered-content">
+    <div class="page-centered-content center small">
+      <h1 class="page-title">Code verification</h1>
+      <mat-card>
+        <mat-card-content>
+          <p>We have sent a code to you via email. Please enter it below. Note: It might take a minute for the email to arrive.</p>
+          <form name="loginForm" #loginForm="ngForm" (submit)="checkCode(loginForm)">
+            <mat-form-field>
+              <input matInput type="tel" name="code" [(ngModel)]="code" id="code" placeholder="Code" (input)="codeChange()" required><br>
+            </mat-form-field>
+            <button *ngIf="!checkingCode" mat-flat-button color="primary" class="login-button">SIGN IN</button>
+            <mat-progress-bar mode="indeterminate" *ngIf="checkingCode"></mat-progress-bar>
+          </form>
+        </mat-card-content>
+      </mat-card>
+      <div class="center">
+        <a routerLink="/continue" class="link forgot-password-link">Back to login</a>
+      </div>
+    </div>
+  </div>
+</div>

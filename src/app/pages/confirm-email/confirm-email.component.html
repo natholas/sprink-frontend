@@ -1,0 +1,15 @@
+<div class="section full-height center-content">
+  <div class="page has-centered-content">  
+    <div class="page-centered-content center small">
+      <mat-card class="center" *ngIf="success">
+        <h3>Email verified. You can now log in.</h3>
+        <a routerLink="/dashboard" mat-flat-button color="primary">CONTINUE</a>
+      </mat-card>
+      <mat-card class="center" *ngIf="error">
+        <h3 *ngIf="error === 'NOT_FOUND'">Invalid link</h3>
+        <h3 *ngIf="error === 'ALREADY_VERIFIED'">You have already verified your email address.</h3>
+        <a routerLink="/dashboard" mat-flat-button color="primary">CONTINUE</a>
+      </mat-card>
+    </div>
+  </div>
+</div>

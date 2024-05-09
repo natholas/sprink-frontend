@@ -1,0 +1,29 @@
+<div [@.disabled]="disableAnimation">
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let group of productGroups; let i = index" [expanded]="i === 0">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{group.name}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      
+      <div *ngFor="let product of group.products" class="product in-expander" (click)="addToCart(product)">
+        <div class="product-icon"><img src="/assets/product-icons/{{product.icon}}.svg"></div>
+        <div class="product-info">
+          <b>{{product.name}}</b>
+          <p>{{product.description}}</p>
+        </div>
+        <div class="product-cta">
+          <span *ngIf="product.type" class="from-amount">From</span>
+          <span class="price" *ngIf="!percentageDiscount"><b>{{product.price / 100 | currency : shop.currency}}</b></span>
+          <span class="price" *ngIf="percentageDiscount">
+            <b class="crossed-out">{{product.price / 100 | currency : shop.currency}}</b>
+            <b class="promo-price">{{(product.price - (product.price * (promotion.percentageDiscount / 100))) / 100 | currency : shop.currency}}</b>
+          </span>
+          <mat-icon *ngIf="!product.type">add</mat-icon>
+          <mat-icon *ngIf="product.type">navigate_next</mat-icon>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

@@ -1,0 +1,77 @@
+<br>
+<div class="cart-meta">
+  <div role="list">
+    <div class="list-item center empty-cart" *ngIf="!cart.length">
+      No items added yet.
+    </div>
+    <div class="list-item" *ngFor="let item of cart" [ngClass]="{disabled: item.count <= 0}">
+      <div class="cart-item">
+        <div class="count">
+          {{item.count}}x
+        </div>
+        <div class="name">
+          <b>{{item.product.name}} <span *ngIf="item.product.unitType">({{item.amount}} {{item.product.unitType}})</span></b>
+          <div class="price-each">
+            ({{(item.product.price) / 100 | currency : shop.currency}}
+            <span *ngIf="item.product.unitType"> per {{item.product.unitType}}</span>
+            <span *ngIf="!item.product.unitType"> each</span>)
+          </div>
+        </div>
+        <div class="spacer"></div>
+        <div class="price-total" *ngIf="!promotion || !promotion.percentageDiscount">
+          {{item.product.price * item.amount * item.count / 100 | currency : shop.currency}}
+        </div>
+        <div class="price-total" *ngIf="promotion && promotion.percentageDiscount">
+          <span class="crossed-out">{{item.product.price * item.amount * item.count / 100 | currency : shop.currency}}</span>
+          <span class="promo-price">{{((item.product.price * item.amount) - (item.product.price * item.amount) * promotion.percentageDiscount / 100) * item.count / 100 | currency : shop.currency}}</span>
+        </div>
+        <div class="actions">
+          <button mat-icon-button (click)="removeFromCart(item.product)" [disabled]="item.count <= 0">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <button mat-icon-button (click)="AddToCart(item.product)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+
+  <div class="total-list-item">
+    <span>Sub total:</span><b>{{subTotal / 100 | currency : shop.currency}}</b>
+  </div>
+  <div class="total-list-item" *ngIf="discountAmount">
+    <span>Discount:</span><b>-{{discountAmount / 100 | currency : shop.currency}}</b>
+  </div>
+  <div class="total-list-item">
+    <span>Pickup and delivery fee:</span><b>{{deliveryFee / 100 | currency : shop.currency}}</b>
+  </div>
+  <div class="total-list-item" *ngIf="state.user && state.user.balance">
+    <span>Sprink credit:</span><b>-{{getSprinkCreditInOrder() / 100 | currency : shop.currency}}</b>
+  </div>
+
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  <div class="total-list-item">
+    <span>Total:</span><b>{{getTotalMinusSprinkCredit() / 100 | currency : shop.currency}}</b>
+  </div>
+
+  <div class="legal vat-info">All prices include VAT</div>
+
+  <button (click)="continue()" class="cta" mat-flat-button color="primary" [disabled]="!cart.length || subTotal < shop.minOrderValue">
+    <span *ngIf="cart.length && subTotal >= shop.minOrderValue">{{buttonText}}</span>
+    <span *ngIf="!cart.length || (subTotal < shop.minOrderValue)">(min: {{shop.minOrderValue / 100 | currency : shop.currency}})</span>
+  </button>
+
+  <div class="times-info">
+    <span>Pickup time: </span><b>{{pickupTime | date : 'short'}}</b><br>
+    <span>Delivery time: </span><b>{{deliveryTime | date : 'short'}}</b>
+    <div class="legal">Dates can be changed on the next page</div>
+  </div>
+
+</div>

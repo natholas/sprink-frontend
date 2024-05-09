@@ -1,0 +1,59 @@
+<div class="page">
+  <a routerLink="/{{returnUrl}}" *ngIf="state.user.address && state.user.address.formatted" mat-button class="back-button"><mat-icon>arrow_back_ios</mat-icon> BACK</a>
+  <h2 class="page-title">Personal information</h2>
+  <p class="page-sub-title" *ngIf="isNew">We need this information to pick up and deliver your order as well as to contact you incase of changes.</p>
+  <p class="page-sub-title" *ngIf="!isNew">Edit your delivery and pickup address.</p>
+
+  <mat-card>
+    <mat-card-content>
+      <form name="addressForm" #addressForm="ngForm" (submit)="submitForm(addressForm)">
+        <div class="formrow">
+          <mat-form-field appearance="outline">
+            <mat-label>First name</mat-label>
+            <input matInput type="text" name="firstName" minlength="2" maxlength="30" [(ngModel)]="firstName" id="firstName" required>
+          </mat-form-field>
+          
+          <mat-form-field appearance="outline">
+            <mat-label>Last name</mat-label>
+            <input matInput type="text" minlength="2" maxlength="30" name="lastName" [(ngModel)]="lastName" id="lastName" required>
+          </mat-form-field>
+        </div>
+
+        <div class="formrow">
+          <mat-form-field appearance="outline">
+            <mat-label>Personal phone number</mat-label>
+            <input matInput type="tel" name="phoneNumber" maxlength="14" [(ngModel)]="phoneNumber" id="phoneNumber" required>
+          </mat-form-field>
+        </div>
+
+        <button style="display: none"></button>
+
+      </form>
+
+      <app-address (onSelect)="selectAddress($event)" (onSuggestions)="onAddressSuggestions($event)" [input]="input"></app-address>
+
+      <div *ngIf="place">
+        <span class="link extra-address-info" (click)="showExtraAddressInfo = true" *ngIf="!showExtraAddressInfo">Extra address info</span>
+        <br>
+        <div class="formrow" *ngIf="showExtraAddressInfo">
+          <mat-form-field appearance="outline">
+            <mat-label>Extra address info</mat-label>
+            <input matInput type="text" maxlength="30" name="extraAddressInfo" [(ngModel)]="extraAddressInfo" id="extraAddressInfo">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div *ngIf="isNew">
+        <br>
+        <p class="legal">We would like to keep you up to date with the latest Sprink offers and services via email, post, SMS and other electrical means.</p>
+        <mat-checkbox name="allowAdvertising" [(ngModel)]="allowAdvertising" >Yes please. I would like to stay up to date</mat-checkbox>
+      </div>
+
+    </mat-card-content>
+
+    <button mat-flat-button class="save-button" (click)="submitForm(addressForm)" color="accent" [disabled]="loading || !place">
+      <span *ngIf="!place">SELECT ADDRESS</span>
+      <span *ngIf="place">SAVE</span>
+    </button>
+  </mat-card>
+</div>

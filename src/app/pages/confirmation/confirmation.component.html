@@ -1,0 +1,10 @@
+<div class="section">
+  <div class="page center">
+    <img src="/assets/pack.png" alt="" class="order-image">
+    <h1>Pickup scheduled!</h1>
+    <p><b>Your laundry will be picked up between {{order.pickupTime | date : 'HH:mm'}} and {{getRunEndTime(order.pickupTime)}} on {{order.pickupTime | date}}.</b></p>
+    <p>Make sure that either you are at home or leave a bag with your laundry outside your door.</p>
+    <a routerLink="/dashboard" mat-flat-button color="primary">HOME</a>
+    <p *ngIf="sprinkCreditOnUse"><br><b>Note: your Sprink credit will be added once this order is picked up</b></p>
+  </div>
+</div>

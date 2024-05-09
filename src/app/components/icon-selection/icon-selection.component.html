@@ -1,0 +1,6 @@
+<div class="center">
+  Please select an icon
+</div>
+<div class="icons">
+  <div class="icon" *ngFor="let icon of icons" (click)="pickIcon(icon)" [ngStyle]="{'background-image': 'url(/assets/product-icons/' + icon + '.svg)'}"></div>
+</div>

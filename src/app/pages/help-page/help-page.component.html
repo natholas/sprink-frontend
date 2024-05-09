@@ -1,0 +1,140 @@
+<div class="section primary bubbles-container">
+  <app-bubbles></app-bubbles>
+  <div class="page center">
+    <h1>Sprink Help</h1>
+  </div>
+</div>
+
+<div class="section">
+  <div class="page sprink-text">
+
+    <div class="center">
+      <h2>Frequently asked questions</h2>
+    </div>
+
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            I was charged more than I thought I would be, why?
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        
+        <p>
+          You may have been charged more than your agreed upon amount because your laundry bag’s contents did not match with your order’s contents. Our shops always check the bag upon arrival and - if needed - will charge or refund you the difference.
+        </p>
+        
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            I think my laundry was stolen, what do I do?
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+      
+        <p>
+          We’re very sorry to hear about this, firstly, you should get in touch with the dry cleaner. You’ll find their contact number on the order’s confirmation email.
+        </p>
+        <p>
+          If that doesn’t resolve things, get in touch with us through our <a class="link" (click)="chat.maximize()">live chat</a>
+        </p>
+      
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            The contents of my bag are different after I got it back, what do I do?
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+      
+        <p>
+          We’re very sorry to hear about this, firstly, you should get in touch with the dry cleaner. You’ll find their contact number on the order’s confirmation email.
+        </p>
+        <p>
+          If that doesn’t resolve things, get in touch with us through our <a class="link" (click)="chat.maximize()">live chat</a>
+        </p>
+      
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            My laundry never got back to me, what do I do?
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+      
+        <p>
+          Get in touch with us right away through our <a class="link" (click)="chat.maximize()">live chat</a>. Make sure you have your order number handy.
+        </p>
+      
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            I cancelled my order. How long will it take for me to receive my refund?
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+      
+        <p>
+          Sprink submits refunds to your bank immediately. Depending on the bank's processing time, it can take anywhere from 5-10 business days to show up on your bank account.
+        </p>
+      
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            How can I change my order?
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+      
+        <p>
+          Don't worry, when the shop picks up your laundry they will correct the contents. You will be charged or refunded the difference.
+        </p>
+        <p>
+          In case you still want to change your order you can cancel the order and start it again. If the order has already been picked up you should contact the shop directly. You can find their phone number in the app.
+        </p>
+      
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            How are you dealing with Covid-19?
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+      
+        <p>
+          Our contactless delivery is ideal for social distancing, you never have to interact with the delivery driver directly, and our drivers are encouraged to wear gloves and masks.
+        </p>
+        <p>
+          We are doing our best to help small businesses stay afloat through these hard times. Our service is essential to keeping these businesses running through lockdown.
+        </p>
+      
+      </mat-expansion-panel>
+
+    </mat-accordion>
+
+    <div class="center">
+      <br>
+      <h3>Looking for the dry cleaner questions?</h3>
+      <a routerLink="/shop-faqs" mat-flat-button color="accent">DRY CLEANER FAQS</a>
+    </div>
+    
+  </div>
+</div>
+
+<div class="section accent">
+  <div class="page sprink-text">
+    <div class="center">
+      <h2>These didn't answer your question?</h2>
+      <button (click)="chat.maximize()" mat-flat-button color="primary">CHAT</button>
+    </div>
+  </div>
+</div>
+
+<app-become-a-partner-banner></app-become-a-partner-banner>
+<app-footer></app-footer>
